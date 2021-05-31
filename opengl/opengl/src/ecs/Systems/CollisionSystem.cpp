@@ -224,7 +224,7 @@ bool CollisionSystem::check_side_t_b(VertexBuffer& buffer, Entity::BaseEntity& p
 void CollisionSystem::Check_For_Collisions(Entity::BaseEntity& p, int collisionBox, int bufferIndex, VertexBuffer& buffer, int axis)
 {
 	unsigned int i = 0;
-	if (p.gravity != -1 && axis == Y_AXIS) {
+	if (p.gravity != -1/* && axis == Y_AXIS*/) {
 		gravity.at(p.gravity).collides = true;
 		gravity.at(p.gravity).isGrounded = false;
 	}
@@ -234,7 +234,7 @@ void CollisionSystem::Check_For_Collisions(Entity::BaseEntity& p, int collisionB
 
 			tmp = check_corner_br_tl(buffer, p, collisionBoxes.at(collisionBox).br, collisionBoxes.at(i).tl, collisionBoxes.at(i).br, axis);
 			if (tmp != false) {
-				if (p.gravity != -1 && axis == Y_AXIS) gravity.at(p.gravity).isGrounded = true;
+				if (p.gravity != -1/* && axis == Y_AXIS*/) gravity.at(p.gravity).isGrounded = true;
 				return;
 			}
 
@@ -250,7 +250,7 @@ void CollisionSystem::Check_For_Collisions(Entity::BaseEntity& p, int collisionB
 
 			tmp = check_corner_bl_tr(buffer, p, collisionBoxes.at(collisionBox).bl, collisionBoxes.at(i).tr, collisionBoxes.at(i).bl, axis);
 			if (tmp != false) {
-				if (p.gravity != -1 && axis == Y_AXIS) gravity.at(p.gravity).isGrounded = true;
+				if (p.gravity != -1/* && axis == Y_AXIS*/) gravity.at(p.gravity).isGrounded = true;
 				return;
 			}
 
@@ -266,7 +266,7 @@ void CollisionSystem::Check_For_Collisions(Entity::BaseEntity& p, int collisionB
 
 			tmp = check_side_t_b(buffer, p, collisionBoxes.at(collisionBox).br, collisionBoxes.at(collisionBox).bl, collisionBoxes.at(i).tr, collisionBoxes.at(i).tl, collisionBoxes.at(i).bl, axis);
 			if (tmp != false) {
-				if (p.gravity != -1 && axis == Y_AXIS) gravity.at(p.gravity).isGrounded = true;
+				if (p.gravity != -1/* && axis == Y_AXIS*/) gravity.at(p.gravity).isGrounded = true;
 				return;
 			}
 
@@ -276,7 +276,7 @@ void CollisionSystem::Check_For_Collisions(Entity::BaseEntity& p, int collisionB
 			}
 		}
 	}
-	if (p.gravity != -1 && axis == Y_AXIS) {
+	if (p.gravity != -1/* && axis == Y_AXIS*/) {
 		gravity.at(p.gravity).collides = false;
 		gravity.at(p.gravity).isGrounded = false;
 	}

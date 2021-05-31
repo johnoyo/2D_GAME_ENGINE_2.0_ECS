@@ -19,7 +19,7 @@ namespace Enemy {
 		//std::cout << "Calling enemy update\n";
 		ecs.GetComponent<Component::Transform>(enemy.transform, transforms).position.x++;
 		//ecs.GetComponent<Component::Transform>(enemy.transform, transforms).position.y += 0.1f;
-		ecs.GetComponent<Component::Transform>(enemy.transform, transforms).position.y += ecs.GetComponent<Component::Gravity>(enemy.gravity, gravity).appliedForce;
+		//ecs.GetComponent<Component::Transform>(enemy.transform, transforms).position.y += ecs.GetComponent<Component::Gravity>(enemy.gravity, gravity).appliedForce;
 	}
 
 }

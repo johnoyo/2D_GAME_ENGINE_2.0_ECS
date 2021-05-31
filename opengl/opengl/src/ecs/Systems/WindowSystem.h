@@ -4,7 +4,7 @@
 
 class WindowSystem {
 public:
-	WindowSystem(float w, float h, const std::string &name, bool f);
+	WindowSystem(float w, float h, const std::string &name, bool full_screen);
 	WindowSystem() { }
 
 	void Start(int Vsync);

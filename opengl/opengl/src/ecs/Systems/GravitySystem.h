@@ -4,8 +4,9 @@
 
 class GravitySystem {
 public:
-	void Start(float gravityForce);
+	void Start(float gravityForce, float thres);
 	void Run();
 private:
 	float force;
+	float threshold;
 };

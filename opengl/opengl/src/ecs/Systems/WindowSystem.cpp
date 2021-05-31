@@ -1,6 +1,6 @@
 #include "WindowSystem.h"
 
-WindowSystem::WindowSystem(float w, float h, const std::string &name, bool f) : width(w), height(h), fullscreen(f)
+WindowSystem::WindowSystem(float w, float h, const std::string &name, bool full_screen) : width(w), height(h), fullscreen(full_screen)
 {
 	title = name;
 }

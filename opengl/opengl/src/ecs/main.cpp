@@ -122,7 +122,7 @@ int main() {
 	renderingSystem.Start(cameraSystem.Get_View_Projection_Matrix());
 	scriptingSystem.Start();
 	collisionSystem.Start();
-	gravitySystem.Start(6.0f);
+	gravitySystem.Start(6.0f, -6.0f);
 	cameraSystem.Start();
 	soundSystem.Start();
 /* --------------------------------------------------------------------------------------- */
@@ -145,10 +145,10 @@ int main() {
 		while (deltaTime >= 1.0) {			
 /* ------------------------------------ Run Systems ------------------------------------ */
 			scriptingSystem.Run();
+			gravitySystem.Run();
 			textureSystem.Run(renderingSystem);
 			// NOTE: if the ground on which the player lands is very thin, if he has a lot of speed he is gonna clip through
 			collisionSystem.Run(renderingSystem.Get_Vertex_Buffer());
-			gravitySystem.Run();
 /* ------------------------------------------------------------------------------------- */
 			updates++;
 			deltaTime--;
