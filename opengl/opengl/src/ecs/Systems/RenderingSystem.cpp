@@ -291,6 +291,26 @@ void VertexBuffer::Update_Material_On_Quad(unsigned int indx, glm::vec4 color, f
 	indx++;
 }
 
+void VertexBuffer::Update_Material_On_Quad(unsigned int indx, glm::vec4 color, float tex_id, glm::vec2 coords, glm::vec2 sheet_size, glm::vec2 sp_size)
+{
+	buffer[indx].color = color;
+	buffer[indx].tex_coord = { (coords.x * sp_size.x) / sheet_size.x, ((coords.y + 1) * sp_size.y) / sheet_size.y };
+	buffer[indx].tex_id = tex_id;
+	indx++;
+	buffer[indx].color = color;
+	buffer[indx].tex_coord = { ((coords.x + 1) * sp_size.x) / sheet_size.x, ((coords.y + 1) * sp_size.y) / sheet_size.y };
+	buffer[indx].tex_id = tex_id;
+	indx++;
+	buffer[indx].color = color;
+	buffer[indx].tex_coord = { ((coords.x + 1) * sp_size.x) / sheet_size.x, (coords.y * sp_size.y) / sheet_size.y };
+	buffer[indx].tex_id = tex_id;
+	indx++;
+	buffer[indx].color = color;
+	buffer[indx].tex_coord = { (coords.x * sp_size.x) / sheet_size.x, (coords.y * sp_size.y) / sheet_size.y };
+	buffer[indx].tex_id = tex_id;
+	indx++;
+}
+
 Vertex_Array* VertexBuffer::Get_Buffer()
 {
 	return buffer;

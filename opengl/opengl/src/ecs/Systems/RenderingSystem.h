@@ -25,6 +25,8 @@ public:
 	void Update_PositionX_On_Quad(unsigned int indx, Component::Transform tr);
 	void Update_PositionY_On_Quad(unsigned int indx, Component::Transform tr);
 	void Update_Material_On_Quad(unsigned int indx, glm::vec4 color, float tex_id);
+	void Update_Material_On_Quad(unsigned int indx, glm::vec4 color, float tex_id, glm::vec2 coords, glm::vec2 sheet_size, glm::vec2 sp_size);
+
 
 	void Set_Buffer(struct Vertex_Array* new_buffer);
 	struct Vertex_Array* Get_Buffer();

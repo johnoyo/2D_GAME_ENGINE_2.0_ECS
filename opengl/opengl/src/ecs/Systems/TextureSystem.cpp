@@ -15,6 +15,7 @@ void TextureSystem::Init_Transparent_Texture()
 
 	std::string str = "-";
 	map.push_back(str);
+	size.push_back({ 1.0f, 1.0f });
 	texture_slot[current_index++] = white_texture_id;
 }
 
@@ -30,7 +31,7 @@ void TextureSystem::Load_Texture(const std::string& path)
 	GLCall(glCreateTextures(GL_TEXTURE_2D, 1, &tex_id));
 	GLCall(glBindTexture(GL_TEXTURE_2D, tex_id));
 	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
 	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
 	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
 	GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels));
@@ -38,6 +39,7 @@ void TextureSystem::Load_Texture(const std::string& path)
 	stbi_image_free(pixels);
 
 	map.push_back(path);
+	size.push_back({ (float)w, (float)h });
 	texture_slot[current_index++] = tex_id;
 	if (current_index == 31) std::cout << "NOTE: You have reached the max amount of textures(32)\n";
 	assert(current_index < 32);
@@ -68,14 +70,17 @@ void TextureSystem::Start()
 
 void TextureSystem::Run(RenderingSystem& rend)
 {
-	unsigned int i = 0;
 	unsigned int indx = 0;
 	for (unsigned int i = 0; i < materials.size(); i++) {
-		rend.Get_Vertex_Buffer().Update_Material_On_Quad(indx, materials.at(i).color, Find(materials.at(i).texture));
+		if (materials.at(i).subTexture.path == "-") {
+			rend.Get_Vertex_Buffer().Update_Material_On_Quad(indx, materials.at(i).color, Find(materials.at(i).texture));
+		} else {
+			rend.Get_Vertex_Buffer().Update_Material_On_Quad(indx, materials.at(i).color, Find(materials.at(i).subTexture.path), materials.at(i).subTexture.coords, size.at(Find(materials.at(i).subTexture.path)), materials.at(i).subTexture.sprite_size);
+		}
 		indx += 4;
 	}
 
-	for (i = 0; i < current_index; i++) {
+	for (unsigned int i = 0; i < current_index; i++) {
 		GLCall(glBindTextureUnit(i, texture_slot[i]));
 	}
 }

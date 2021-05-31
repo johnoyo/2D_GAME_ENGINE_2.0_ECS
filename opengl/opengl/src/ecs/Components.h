@@ -20,12 +20,18 @@ namespace Component {
 
 	struct Material {
 		std::string texture = "-";
+		struct SubTexture {
+			glm::vec2 coords = { -1.0f, -1.0f };
+			glm::vec2 sprite_size = { -1.0f, -1.0f };
+			std::string path = "-";
+		} subTexture;
 		glm::vec4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
 	};
 
 	struct Animation {
 		std::string film;
 		float step;
+		bool active;
 	};
 
 	struct Gravity {

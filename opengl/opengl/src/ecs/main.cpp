@@ -10,6 +10,7 @@
 #include "Systems\CollisionSystem.h"
 #include "Systems\GravitySystem.h"
 #include "Systems\LevelSystem.h"
+#include "Systems\SoundSystem.h"
 
 System ecs = System();
 
@@ -19,10 +20,9 @@ std::vector<Entity::BaseEntity> entities;
 Entity::BaseEntity player;
 Entity::BaseEntity enemy;
 Entity::BaseEntity level[90];
-//Entity::BaseEntity block;
-//Entity::BaseEntity ground;
 Entity::BaseEntity camera;
 Entity::BaseEntity lvlHandler;
+Entity::BaseEntity sps;
 /* --------------------------------------------------------------------- */
 
 /* ------------------------- Component Vector -------------------------- */
@@ -45,6 +45,7 @@ InputSystem inputSystem;
 CollisionSystem collisionSystem;
 GravitySystem gravitySystem;
 LevelSystem levelSystem;
+SoundSystem soundSystem;
 /* --------------------------------------------------------------------------------- */
 
 #include "EntitiesCode\Player.h"
@@ -58,10 +59,9 @@ int main() {
 /* ------------------------------------ Enroll Entities ------------------------------------ */
 	ecs.EnrollEntity(player, entities);
 	ecs.EnrollEntity(enemy, entities);
-	//ecs.EnrollEntity(block, entities);
-	//ecs.EnrollEntity(ground, entities);
 	ecs.EnrollEntity(camera, entities);
 	ecs.EnrollEntity(lvlHandler, entities);
+	ecs.EnrollEntity(sps, entities);
 
 	for (unsigned int i = 0; i < 90; i++)
 		ecs.EnrollEntity(level[i], entities);
@@ -83,16 +83,6 @@ int main() {
 	ecs.AddComponent<Component::Gravity>(enemy.gravity, entities.at(enemy.ID).gravity, gravity);
 	ecs.AddComponent<Component::Attributes>(enemy.attributes, entities.at(enemy.ID).attributes, attributes);
 
-	/*ecs.AddComponent<Component::Transform>(block.transform, entities.at(block.ID).transform, transforms);
-	ecs.AddComponent<Component::CollisionBox>(block.collisionBox, entities.at(block.ID).collisionBox, collisionBoxes);
-	ecs.AddComponent<Component::Attributes>(block.attributes, entities.at(block.ID).attributes, attributes);
-	ecs.AddComponent<Component::Material>(block.material, entities.at(block.ID).material, materials);
-
-	ecs.AddComponent<Component::Transform>(ground.transform, entities.at(ground.ID).transform, transforms);
-	ecs.AddComponent<Component::CollisionBox>(ground.collisionBox, entities.at(ground.ID).collisionBox, collisionBoxes);
-	ecs.AddComponent<Component::Attributes>(ground.attributes, entities.at(ground.ID).attributes, attributes);
-	ecs.AddComponent<Component::Material>(ground.material, entities.at(ground.ID).material, materials);*/
-
 	for (unsigned int i = 0; i < 90; i++) {
 		ecs.AddComponent<Component::Transform>(level[i].transform, entities.at(level[i].ID).transform, transforms);
 		ecs.AddComponent<Component::CollisionBox>(level[i].collisionBox, entities.at(level[i].ID).collisionBox, collisionBoxes);
@@ -103,6 +93,8 @@ int main() {
 	ecs.AddComponent<Component::Transform>(camera.transform, entities.at(camera.ID).transform, transforms);
 
 	ecs.AddComponent<Component::Script>(lvlHandler.script, entities.at(lvlHandler.ID).script, scripts);
+
+	ecs.AddComponent<Component::Material>(sps.material, entities.at(sps.ID).material, materials);
 /* ---------------------------------------------------------------------------------------------------- */
 
 /* ------------------------------------ Attach scripts to Entities ------------------------------------ */
@@ -119,21 +111,9 @@ int main() {
 /* ------------------------------------ Init components of Entities ------------------------------------ */
 	ecs.GetComponent<Component::Attributes>(player.attributes, attributes).Static = false;
 	ecs.GetComponent<Component::Attributes>(enemy.attributes, attributes).Static = false;
-	//ecs.GetComponent<Component::Attributes>(block.attributes, attributes).Static = true;
-	//ecs.GetComponent<Component::Attributes>(ground.attributes, attributes).Static = true;
 
 	for (unsigned int i = 0; i < 90; i++)
 		ecs.GetComponent<Component::Attributes>(level[i].attributes, attributes).Static = true;
-
-	/*ecs.GetComponent<Component::Transform>(block.transform, transforms).position.x = 500.0f;
-	ecs.GetComponent<Component::Transform>(block.transform, transforms).position.y = 50.0f;
-	ecs.GetComponent<Component::Transform>(block.transform, transforms).scale.x = 50.0f;
-	ecs.GetComponent<Component::Transform>(block.transform, transforms).scale.y = 100.0f;
-
-	ecs.GetComponent<Component::Transform>(ground.transform, transforms).position.x = 0.0f;
-	ecs.GetComponent<Component::Transform>(ground.transform, transforms).position.y = 0.0f;
-	ecs.GetComponent<Component::Transform>(ground.transform, transforms).scale.x = 600.0f;
-	ecs.GetComponent<Component::Transform>(ground.transform, transforms).scale.y = 30.0f;*/
 /* ----------------------------------------------------------------------------------------------------- */
 
 /* ------------------------------------ Start Systems ------------------------------------ */
@@ -144,6 +124,7 @@ int main() {
 	collisionSystem.Start();
 	gravitySystem.Start(6.0f);
 	cameraSystem.Start();
+	soundSystem.Start();
 /* --------------------------------------------------------------------------------------- */
 
 	static double limitFPS = 1.0 / 60.0;
@@ -165,7 +146,6 @@ int main() {
 /* ------------------------------------ Run Systems ------------------------------------ */
 			scriptingSystem.Run();
 			textureSystem.Run(renderingSystem);
-			//renderingSystem.Run(player.ID);
 			// NOTE: if the ground on which the player lands is very thin, if he has a lot of speed he is gonna clip through
 			collisionSystem.Run(renderingSystem.Get_Vertex_Buffer());
 			gravitySystem.Run();
