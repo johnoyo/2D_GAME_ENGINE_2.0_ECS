@@ -90,6 +90,7 @@ private:
 	void Init_Vertex_Buffer();
 	void Update_Vertex_Buffer_Positions(int playerTransformID);
 	void Update_Camera_Uniform(glm::mat4 m_Camera_vp);
+	void Draw_Lone_Quad(Entity::BaseEntity entt);
 };
 
 

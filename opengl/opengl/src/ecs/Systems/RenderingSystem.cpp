@@ -86,7 +86,6 @@ void RenderingSystem::Upadte_Index_Buffer(unsigned int size)
 
 void RenderingSystem::Init_Vertex_Buffer()
 {
-
 	vbuffer.Reset();
 	std::cout << transforms.size() << "\n";
 	for (unsigned int i = 0; i < entities.size(); i++) {
@@ -124,6 +123,22 @@ void RenderingSystem::Update_Camera_Uniform(glm::mat4 m_Camera_vp)
 		std::cout << "Uniform not found!!!\n";
 	}
 	GLCall(glUniformMatrix4fv(location1, 1, GL_FALSE, glm::value_ptr(m_Camera_vp)));
+}
+
+void RenderingSystem::Draw_Lone_Quad(Entity::BaseEntity entt)
+{
+	vbuffer.Reset();
+
+	vbuffer.Fill_Buffer({ transforms.at(entt.transform).position.x, transforms.at(entt.transform).position.y + transforms.at(entt.transform).scale.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f), 0);
+	vbuffer.Fill_Buffer({ transforms.at(entt.transform).position.x + transforms.at(entt.transform).scale.x, transforms.at(entt.transform).position.y + transforms.at(entt.transform).scale.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f), 0);
+	vbuffer.Fill_Buffer({ transforms.at(entt.transform).position.x + transforms.at(entt.transform).scale.x , transforms.at(entt.transform).position.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f), 0);
+	vbuffer.Fill_Buffer({ transforms.at(entt.transform).position.x, transforms.at(entt.transform).position.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
+
+	std::cout << vbuffer.Get_Size() / 4 << "\n";
+
+	ibuffer.Clean();
+	ibuffer.Make_Indecies(vbuffer.Get_Size());
+	Upadte_Index_Buffer(vbuffer.Get_Size());
 }
 
 ShaderProgramSource RenderingSystem::ParseShader(const std::string& filepath)

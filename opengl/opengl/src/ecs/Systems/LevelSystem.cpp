@@ -130,3 +130,9 @@ void LevelSystem::LoadLevel(const std::string& level_path, RenderingSystem& rend
 	current_level++;
 
 }
+
+void LevelSystem::LoadLevel(Entity::BaseEntity entt, RenderingSystem& rend, VertexBuffer& vertex_buffer, IndexBuffer& index_buffer)
+{
+	ecs.GetComponent<Component::Attributes>(entt.attributes, attributes).Enabled = true;
+	rend.Draw_Lone_Quad(entt);
+}

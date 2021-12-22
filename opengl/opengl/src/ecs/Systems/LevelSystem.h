@@ -11,6 +11,7 @@ public:
 	void Clear();
 
 	void LoadLevel(const std::string& level_path, RenderingSystem& rend, VertexBuffer& vertex_buffer, IndexBuffer& index_buffer);
+	void LoadLevel(Entity::BaseEntity entt, RenderingSystem& rend, VertexBuffer& vertex_buffer, IndexBuffer& index_buffer);
 	inline unsigned int GetCurrentLevel() { return current_level; }
 private:
 	unsigned int current_level = 0;

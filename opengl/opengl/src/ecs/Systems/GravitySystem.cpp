@@ -20,6 +20,5 @@ void GravitySystem::Run()
 		else if (entt.gravity != -1 && gravity.at(entt.gravity).gravityEnabled && gravity.at(entt.gravity).isGrounded) {
 			if (gravity.at(entt.gravity).appliedForce <= threshold) gravity.at(entt.gravity).appliedForce = threshold;
 		}
-
 	}
 }

@@ -11,8 +11,6 @@ namespace Player {
 		ecs.GetComponent<Component::Transform>(player.transform, transforms).scale.x = 25.0f;
 		ecs.GetComponent<Component::Transform>(player.transform, transforms).scale.y = 25.0f;*/
 		//ecs.GetComponent<Component::Material>(player.material, materials).texture = "res/textures/player_r.png";
-		//ecs.GetComponent<Component::Gravity>(enemy.gravity, gravity).appliedForce = 1;
-
 
 		ecs.GetComponent<Component::Material>(sps.material, materials).texture = "res/textures/super_mario_tiles.png";
 
@@ -37,11 +35,12 @@ namespace Player {
 		if (inputSystem.GetKeyDown(windowSystem.Get_Window(), GLFW_KEY_A, GLFW_PRESS)) 
 			ecs.GetComponent<Component::Transform>(player.transform, transforms).position.x-=6.0f;
 
+		// NOTE: Maybe move this inside the gravity system??? 
 		if (inputSystem.GetKeyDown(windowSystem.Get_Window(), GLFW_KEY_W, GLFW_PRESS) && ecs.GetComponent<Component::Gravity>(player.gravity, gravity).isGrounded)
 			ecs.GetComponent<Component::Gravity>(player.gravity, gravity).appliedForce = 10.0f;
 
 		//ecs.GetComponent<Component::Transform>(player.transform, transforms).position.y += ecs.GetComponent<Component::Gravity>(player.gravity, gravity).appliedForce;
-		std::cout << ecs.GetComponent<Component::Gravity>(player.gravity, gravity).appliedForce << "\n";
+		//std::cout << ecs.GetComponent<Component::Gravity>(player.gravity, gravity).appliedForce << "\n";
 
 	
 		//if (inputSystem.GetKeyDown(windowSystem.Get_Window(), GLFW_KEY_S, GLFW_PRESS)) ecs.GetComponent<Component::Transform>(player.transform, transforms).position.y-=14.0f;
