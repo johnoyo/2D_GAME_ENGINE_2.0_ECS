@@ -99,10 +99,10 @@ int main() {
 
 /* ------------------------------------ Attach scripts to Entities ------------------------------------ */
 	ecs.GetComponent<Component::Script>(player.script, scripts).init = Player::init;
-	ecs.GetComponent<Component::Script>(player.script, scripts).update = Player::update;
+	ecs.GetComponent<Component::Script>(player.script, scripts).update = Player::Level_0::update;
 
 	ecs.GetComponent<Component::Script>(enemy.script, scripts).init = Enemy::init;
-	ecs.GetComponent<Component::Script>(enemy.script, scripts).update = Enemy::update;
+	ecs.GetComponent<Component::Script>(enemy.script, scripts).update = Enemy::Level_0::update;
 
 	ecs.GetComponent<Component::Script>(lvlHandler.script, scripts).init = LevelHandler::init;
 	ecs.GetComponent<Component::Script>(lvlHandler.script, scripts).update = LevelHandler::update;
@@ -145,7 +145,7 @@ int main() {
 		while (deltaTime >= 1.0) {			
 /* ------------------------------------ Run Systems ------------------------------------ */
 			scriptingSystem.Run();
-			gravitySystem.Run();
+			//gravitySystem.Run();
 			textureSystem.Run(renderingSystem);
 			// NOTE: if the ground on which the player lands is very thin, if he has a lot of speed he is gonna clip through
 			collisionSystem.Run(renderingSystem.Get_Vertex_Buffer());

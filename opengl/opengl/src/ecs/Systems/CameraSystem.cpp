@@ -26,3 +26,22 @@ void CameraSystem::Run()
 {
 	std::cout << "Running camera system ...\n";
 }
+
+void CameraSystem::Follow(Entity::BaseEntity player, float offset)
+{
+	Set_Position_x(transforms.at(player.transform).position.x + offset);
+	Set_Position_y(transforms.at(player.transform).position.y + offset);
+	Recalculate_View_Matrix();
+}
+
+void CameraSystem::Follow_Horizontally(Entity::BaseEntity player, float offset_x)
+{
+	Set_Position_x(transforms.at(player.transform).position.x + offset_x);
+	Recalculate_View_Matrix();
+}
+
+void CameraSystem::Follow_Vertically(Entity::BaseEntity player, float offset_y)
+{
+	Set_Position_y(transforms.at(player.transform).position.y + offset_y);
+	Recalculate_View_Matrix();
+}

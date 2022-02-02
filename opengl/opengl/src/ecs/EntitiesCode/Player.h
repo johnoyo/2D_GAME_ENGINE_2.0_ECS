@@ -20,31 +20,43 @@ namespace Player {
 
 	}
 
-	void update(float dt) {
-		// TODO: Change Set_Position_x() to take an entity as argument 
-		// cameraSystem.Set_Position_x(ecs.GetComponent<Component::Transform>(player.transform, transforms).position.x + (-windowSystem.Get_Width() / 2.0f));
-		// cameraSystem.Set_Position_x(transforms.at(player.transform).position.x + (-windowSystem.Get_Width() / 2.0f));
+	namespace Level_0 {
 
-		//std::cout << "Calling player update\n";
-		if (inputSystem.GetKeyDown(windowSystem.Get_Window(), GLFW_KEY_D, GLFW_PRESS))
-			ecs.GetComponent<Component::Transform>(player.transform, transforms).position.x+=6.0f;
+		void update(float dt) {
 
-		if (inputSystem.GetKeyPress(windowSystem.Get_Window(), GLFW_KEY_SPACE))
-			soundSystem.PlaySound("res/audio/bleep.mp3");
+			// Camera follow
+			cameraSystem.Follow(player, (-windowSystem.Get_Width() / 2.0f));
 
-		if (inputSystem.GetKeyDown(windowSystem.Get_Window(), GLFW_KEY_A, GLFW_PRESS)) 
-			ecs.GetComponent<Component::Transform>(player.transform, transforms).position.x-=6.0f;
+			// Player movement
+			if (inputSystem.GetKeyDown(windowSystem.Get_Window(), GLFW_KEY_D, GLFW_PRESS))
+				ecs.GetComponent<Component::Transform>(player.transform, transforms).position.x += 6.0f;
 
-		// NOTE: Maybe move this inside the gravity system??? 
-		if (inputSystem.GetKeyDown(windowSystem.Get_Window(), GLFW_KEY_W, GLFW_PRESS) && ecs.GetComponent<Component::Gravity>(player.gravity, gravity).isGrounded)
-			ecs.GetComponent<Component::Gravity>(player.gravity, gravity).appliedForce = 10.0f;
+			if (inputSystem.GetKeyPress(windowSystem.Get_Window(), GLFW_KEY_SPACE))
+				soundSystem.PlaySound("res/audio/bleep.mp3");
 
-		//ecs.GetComponent<Component::Transform>(player.transform, transforms).position.y += ecs.GetComponent<Component::Gravity>(player.gravity, gravity).appliedForce;
-		//std::cout << ecs.GetComponent<Component::Gravity>(player.gravity, gravity).appliedForce << "\n";
+			if (inputSystem.GetKeyDown(windowSystem.Get_Window(), GLFW_KEY_A, GLFW_PRESS))
+				ecs.GetComponent<Component::Transform>(player.transform, transforms).position.x -= 6.0f;
+
+			if (inputSystem.GetKeyDown(windowSystem.Get_Window(), GLFW_KEY_S, GLFW_PRESS)) 
+				ecs.GetComponent<Component::Transform>(player.transform, transforms).position.y-=6.0f;
+
+			if (inputSystem.GetKeyDown(windowSystem.Get_Window(), GLFW_KEY_W, GLFW_PRESS)) 
+				ecs.GetComponent<Component::Transform>(player.transform, transforms).position.y+=6.0f;
+
+			// Player movement with gravity enabled
+			// NOTE: Maybe move this inside the gravity system??? 
+			//if (inputSystem.GetKeyDown(windowSystem.Get_Window(), GLFW_KEY_W, GLFW_PRESS) && ecs.GetComponent<Component::Gravity>(player.gravity, gravity).isGrounded)
+			//	ecs.GetComponent<Component::Gravity>(player.gravity, gravity).appliedForce = 10.0f;
+
+			//ecs.GetComponent<Component::Transform>(player.transform, transforms).position.y += ecs.GetComponent<Component::Gravity>(player.gravity, gravity).appliedForce;
+			//std::cout << ecs.GetComponent<Component::Gravity>(player.gravity, gravity).appliedForce << "\n";
+
+
+		}
+
+	}
 
 	
-		//if (inputSystem.GetKeyDown(windowSystem.Get_Window(), GLFW_KEY_S, GLFW_PRESS)) ecs.GetComponent<Component::Transform>(player.transform, transforms).position.y-=14.0f;
-	}
 
 }
 

@@ -15,11 +15,15 @@ namespace Enemy {
 		ecs.GetComponent<Component::Material>(enemy.material, materials).texture = "res/textures/enemy.png";
 	}
 
-	void update(float dt) {
-		//std::cout << "Calling enemy update\n";
-		ecs.GetComponent<Component::Transform>(enemy.transform, transforms).position.x++;
-		//ecs.GetComponent<Component::Transform>(enemy.transform, transforms).position.y += 0.1f;
-		//ecs.GetComponent<Component::Transform>(enemy.transform, transforms).position.y += ecs.GetComponent<Component::Gravity>(enemy.gravity, gravity).appliedForce;
+	namespace Level_0 {
+
+		void update(float dt) {
+			//std::cout << "Calling enemy update\n";
+			ecs.GetComponent<Component::Transform>(enemy.transform, transforms).position.x++;
+			//ecs.GetComponent<Component::Transform>(enemy.transform, transforms).position.y += 0.1f;
+			//ecs.GetComponent<Component::Transform>(enemy.transform, transforms).position.y += ecs.GetComponent<Component::Gravity>(enemy.gravity, gravity).appliedForce;
+		}
+
 	}
 
 }
