@@ -4,6 +4,6 @@
 class ScriptingSystem {
 public:
 	void Start();
-	void Run();
+	void Run(int current_level);
 	void Clear();
 };

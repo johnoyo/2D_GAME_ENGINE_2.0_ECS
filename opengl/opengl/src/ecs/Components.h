@@ -51,7 +51,7 @@ namespace Component {
 
 	struct Script {
 		std::function<void(float)> init;
-		std::function<void(float)> update;
+		std::vector<std::function<void(float)>> update;
 	};
 
 	struct Attributes {

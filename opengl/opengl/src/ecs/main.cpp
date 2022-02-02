@@ -74,7 +74,7 @@ int main() {
 	ecs.AddComponent<Component::Material>(player.material, entities.at(player.ID).material, materials);
 	ecs.AddComponent<Component::CollisionBox>(player.collisionBox, entities.at(player.ID).collisionBox, collisionBoxes);
 	ecs.AddComponent<Component::Attributes>(player.attributes, entities.at(player.ID).attributes, attributes);
-	ecs.AddComponent<Component::Gravity>(player.gravity, entities.at(player.ID).gravity, gravity);
+	//ecs.AddComponent<Component::Gravity>(player.gravity, entities.at(player.ID).gravity, gravity);
 
 	ecs.AddComponent<Component::Transform>(enemy.transform, entities.at(enemy.ID).transform, transforms);
 	ecs.AddComponent<Component::Script>(enemy.script, entities.at(enemy.ID).script, scripts);
@@ -82,6 +82,8 @@ int main() {
 	ecs.AddComponent<Component::CollisionBox>(enemy.collisionBox, entities.at(enemy.ID).collisionBox, collisionBoxes);
 	ecs.AddComponent<Component::Gravity>(enemy.gravity, entities.at(enemy.ID).gravity, gravity);
 	ecs.AddComponent<Component::Attributes>(enemy.attributes, entities.at(enemy.ID).attributes, attributes);
+	ecs.AddComponent<Component::Gravity>(enemy.gravity, entities.at(enemy.ID).gravity, gravity);
+
 
 	for (unsigned int i = 0; i < 90; i++) {
 		ecs.AddComponent<Component::Transform>(level[i].transform, entities.at(level[i].ID).transform, transforms);
@@ -99,13 +101,14 @@ int main() {
 
 /* ------------------------------------ Attach scripts to Entities ------------------------------------ */
 	ecs.GetComponent<Component::Script>(player.script, scripts).init = Player::init;
-	ecs.GetComponent<Component::Script>(player.script, scripts).update = Player::Level_0::update;
+	ecs.GetComponent<Component::Script>(player.script, scripts).update.push_back(Player::Level_0::update);
 
 	ecs.GetComponent<Component::Script>(enemy.script, scripts).init = Enemy::init;
-	ecs.GetComponent<Component::Script>(enemy.script, scripts).update = Enemy::Level_0::update;
+	ecs.GetComponent<Component::Script>(enemy.script, scripts).update.push_back(Enemy::Level_0::update);
+	ecs.GetComponent<Component::Script>(enemy.script, scripts).update.push_back(Enemy::Level_1::update);
 
 	ecs.GetComponent<Component::Script>(lvlHandler.script, scripts).init = LevelHandler::init;
-	ecs.GetComponent<Component::Script>(lvlHandler.script, scripts).update = LevelHandler::update;
+	ecs.GetComponent<Component::Script>(lvlHandler.script, scripts).update.push_back(LevelHandler::update);
 /* ---------------------------------------------------------------------------------------------------- */
 
 /* ------------------------------------ Init components of Entities ------------------------------------ */
@@ -144,8 +147,8 @@ int main() {
 		// - Only update at 60 frames / s
 		while (deltaTime >= 1.0) {			
 /* ------------------------------------ Run Systems ------------------------------------ */
-			scriptingSystem.Run();
-			//gravitySystem.Run();
+			scriptingSystem.Run(levelSystem.GetCurrentLevel());
+			gravitySystem.Run();
 			textureSystem.Run(renderingSystem);
 			// NOTE: if the ground on which the player lands is very thin, if he has a lot of speed he is gonna clip through
 			collisionSystem.Run(renderingSystem.Get_Vertex_Buffer());

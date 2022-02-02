@@ -1,17 +1,18 @@
 #include "LevelSystem.h"
 
-void LevelSystem::LoadLevel(const std::string& level_path, RenderingSystem& rend, VertexBuffer& vertex_buffer, IndexBuffer& index_buffer)
+void LevelSystem::LoadLevel(const std::string& level_path, GravitySystem& grav, RenderingSystem& rend, VertexBuffer& vertex_buffer, IndexBuffer& index_buffer)
 {
-	FILE* f;
-	fopen_s(&f, level_path.c_str(), "r");
+	std::ifstream is(level_path);
 
-	if (!f) return;
 	char c;
 	char acc[3];
 	int i = 0, j = 0, s = 0, h = 0, w = 0;
 	int index = 0;
 
-	while ((c = fgetc(f)) != '\n') {
+	// Parse level dimensions
+	while (is.get(c)) {
+		if (c == '\n') break;
+
 		if (c == ',') {
 			index = 0;
 			h = atoi(acc);
@@ -34,8 +35,9 @@ void LevelSystem::LoadLevel(const std::string& level_path, RenderingSystem& rend
 		float k;
 	};
 
+	// Parse level content
 	std::vector<pos> p;
-	while ((c = fgetc(f)) != EOF) {
+	while (is.get(c)) {
 		if (c == 'B') {
 			p.push_back({ i,j,16.0f });
 		} else if (c == 'G') {
@@ -87,8 +89,10 @@ void LevelSystem::LoadLevel(const std::string& level_path, RenderingSystem& rend
 			enemy_index++;
 		}
 	}
+
 	std::cout << "lvl indx: " << level_index << "\n";
 	std::cout << "p size: " << p.size() << "\n";
+
 	// Upadate the position of the player last
 	ecs.GetComponent<Component::Transform>(player.transform, transforms).scale.x = 29.0f;
 	ecs.GetComponent<Component::Transform>(player.transform, transforms).scale.y = 29.0f;
@@ -96,9 +100,9 @@ void LevelSystem::LoadLevel(const std::string& level_path, RenderingSystem& rend
 	ecs.GetComponent<Component::Transform>(player.transform, transforms).position.y = p.at(s).i * ecs.GetComponent<Component::Transform>(player.transform, transforms).scale.y;
 	ecs.GetComponent<Component::Attributes>(player.attributes, attributes).Enabled = true;
 	ecs.GetComponent<Component::CollisionBox>(player.collisionBox, collisionBoxes).CBEnabled = true;
-	ecs.GetComponent<Component::Gravity>(player.gravity, gravity).appliedForce = 0;
 
 	// NOTE: i have to do this for every entity array
+	// Disable unsused entities by this level
 	for (unsigned int i = level_index; i < 90; i++) {
 		ecs.GetComponent<Component::Attributes>(level[i].attributes, attributes).Enabled = false;
 		ecs.GetComponent<Component::CollisionBox>(level[i].collisionBox, collisionBoxes).CBEnabled = false;
@@ -123,11 +127,13 @@ void LevelSystem::LoadLevel(const std::string& level_path, RenderingSystem& rend
 		}
 	}
 
-	fclose(f);
+	is.close();
 
 	rend.Init_Vertex_Buffer();
 
 	current_level++;
+
+	grav.ResetGravity(6.0f, -6.0f);
 
 }
 

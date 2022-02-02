@@ -6,6 +6,21 @@ void GravitySystem::Start(float gravityForce, float thres)
 	threshold = thres;
 }
 
+void GravitySystem::ResetGravity(float gravityForce, float thres)
+{
+	// Reset gravity forces
+	force = gravityForce;
+	threshold = thres;
+
+	// Reset force applied to each entity
+	for (unsigned int i = 0; i < entities.size(); i++) {
+		Entity::BaseEntity entt = entities.at(i);
+		if (entt.gravity != -1) {
+			gravity.at(entt.gravity).appliedForce = 0.0f;
+		}
+	}
+}
+
 void GravitySystem::Run()
 {
 	for (unsigned int i = 0; i < entities.size(); i++) {
@@ -22,3 +37,4 @@ void GravitySystem::Run()
 		}
 	}
 }
+
