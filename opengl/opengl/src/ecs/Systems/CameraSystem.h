@@ -15,6 +15,7 @@ public:
 	void Run();
 
 	void Follow(Entity::BaseEntity player, float offset);
+	void Follow(Entity::BaseEntity player, float offset_x, float offset_y);
 	void Follow_Horizontally(Entity::BaseEntity player, float offset_x);
 	void Follow_Vertically(Entity::BaseEntity player, float offset_y);
 

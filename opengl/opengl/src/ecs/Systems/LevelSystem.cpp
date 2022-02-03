@@ -119,7 +119,7 @@ void LevelSystem::LoadLevel(const std::string& level_path, ScriptingSystem& scr,
 
 	// NOTE: i have to do this for every entity array
 	// Disable unsused entities by this level
-	for (unsigned int i = level_index; i < 90; i++) {
+	for (unsigned int i = level_index; i < 5000; i++) {
 		ecs.GetComponent<Component::Attributes>(level[i].attributes, attributes).Enabled = false;
 		ecs.GetComponent<Component::CollisionBox>(level[i].collisionBox, collisionBoxes).CBEnabled = false;
 	}

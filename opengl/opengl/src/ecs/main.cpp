@@ -19,7 +19,7 @@ std::vector<Entity::BaseEntity> entities;
 /* ------------------------------- Entities ---------------------------- */
 Entity::BaseEntity player;
 Entity::BaseEntity enemy;
-Entity::BaseEntity level[90];
+Entity::BaseEntity level[5000];
 Entity::BaseEntity camera;
 Entity::BaseEntity lvlHandler;
 Entity::BaseEntity sps;
@@ -36,7 +36,7 @@ std::vector<Component::Gravity> gravity;
 /* --------------------------------------------------------------------- */
 
 /* ------------------------------------ Systems ------------------------------------ */
-WindowSystem windowSystem = WindowSystem(600.0f, 600.0f, "test", false);
+WindowSystem windowSystem = WindowSystem(1920.0f, 1080.0f, "test", false);
 TextureSystem textureSystem;
 RenderingSystem renderingSystem;
 CameraSystem cameraSystem = CameraSystem(0.0f, windowSystem.Get_Width(), 0.0f, windowSystem.Get_Height());
@@ -63,7 +63,7 @@ int main() {
 	ecs.EnrollEntity(lvlHandler, entities);
 	ecs.EnrollEntity(sps, entities);
 
-	for (unsigned int i = 0; i < 90; i++)
+	for (unsigned int i = 0; i < 5000; i++)
 		ecs.EnrollEntity(level[i], entities);
 /* ----------------------------------------------------------------------------------------- */
 
@@ -85,7 +85,7 @@ int main() {
 	ecs.AddComponent<Component::Gravity>(enemy.gravity, entities.at(enemy.ID).gravity, gravity);
 
 
-	for (unsigned int i = 0; i < 90; i++) {
+	for (unsigned int i = 0; i < 5000; i++) {
 		ecs.AddComponent<Component::Transform>(level[i].transform, entities.at(level[i].ID).transform, transforms);
 		ecs.AddComponent<Component::CollisionBox>(level[i].collisionBox, entities.at(level[i].ID).collisionBox, collisionBoxes);
 		ecs.AddComponent<Component::Attributes>(level[i].attributes, entities.at(level[i].ID).attributes, attributes);
@@ -116,7 +116,7 @@ int main() {
 	ecs.GetComponent<Component::Attributes>(player.attributes, attributes).Static = false;
 	ecs.GetComponent<Component::Attributes>(enemy.attributes, attributes).Static = false;
 
-	for (unsigned int i = 0; i < 90; i++)
+	for (unsigned int i = 0; i < 5000; i++)
 		ecs.GetComponent<Component::Attributes>(level[i].attributes, attributes).Static = true;
 /* ----------------------------------------------------------------------------------------------------- */
 

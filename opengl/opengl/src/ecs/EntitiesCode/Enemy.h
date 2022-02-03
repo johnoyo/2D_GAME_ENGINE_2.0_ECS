@@ -13,7 +13,7 @@ namespace Enemy {
 		void update(float dt) {
 			//std::cout << "Calling enemy update 0 \n";
 			ecs.GetComponent<Component::Transform>(enemy.transform, transforms).position.x--;
-			ecs.GetComponent<Component::Gravity>(enemy.gravity, gravity).gravityEnabled = false;
+			ecs.GetComponent<Component::Gravity>(enemy.gravity, gravity).gravityEnabled = true;
 		}
 
 	}
@@ -22,7 +22,7 @@ namespace Enemy {
 
 		void update(float dt) {
 			//std::cout << "Calling enemy update 1 \n";
-			ecs.GetComponent<Component::Transform>(enemy.transform, transforms).position.x--;
+			ecs.GetComponent<Component::Transform>(enemy.transform, transforms).position.x++;
 			ecs.GetComponent<Component::Gravity>(enemy.gravity, gravity).gravityEnabled = false;
 		}
 

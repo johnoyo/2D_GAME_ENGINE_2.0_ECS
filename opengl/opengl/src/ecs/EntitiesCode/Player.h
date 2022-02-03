@@ -25,7 +25,7 @@ namespace Player {
 		void update(float dt) {
 
 			// Camera follow
-			cameraSystem.Follow(player, (-windowSystem.Get_Width() / 2.0f));
+			cameraSystem.Follow(player, (-windowSystem.Get_Width() / 2.0f), (-windowSystem.Get_Height() / 2.0f));
 
 			// Player movement
 			if (inputSystem.GetKeyDown(windowSystem.Get_Window(), GLFW_KEY_D, GLFW_PRESS))

@@ -12,7 +12,7 @@ void ScriptingSystem::Start(int current_level)
 
 			int size = scripts.at(i).init.size();
 			if (current_level < size)
-				scripts.at(i).init[current_level - 1](1.0f);
+				scripts.at(i).init[current_level](1.0f);
 			else
 				scripts.at(i).init[size - 1](1.0f);
 		}
@@ -21,11 +21,12 @@ void ScriptingSystem::Start(int current_level)
 
 void ScriptingSystem::Run(int current_level)
 {
+	//std::cout << "Current level: " << current_level << "\n";
 	for (unsigned int i = 0; i < scripts.size(); i++) {
 		//scripts.at(i).update(1.0f);
 		if (attributes.at(i).Enabled) {
 			int size = scripts.at(i).update.size();
-			if (current_level < size)
+			if (current_level <= size)
 				scripts.at(i).update[current_level - 1](1.0f);
 			else
 				scripts.at(i).update[size - 1](1.0f);

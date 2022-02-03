@@ -34,6 +34,13 @@ void CameraSystem::Follow(Entity::BaseEntity player, float offset)
 	Recalculate_View_Matrix();
 }
 
+void CameraSystem::Follow(Entity::BaseEntity player, float offset_x, float offset_y)
+{
+	Set_Position_x(transforms.at(player.transform).position.x + offset_x);
+	Set_Position_y(transforms.at(player.transform).position.y + offset_y);
+	Recalculate_View_Matrix();
+}
+
 void CameraSystem::Follow_Horizontally(Entity::BaseEntity player, float offset_x)
 {
 	Set_Position_x(transforms.at(player.transform).position.x + offset_x);

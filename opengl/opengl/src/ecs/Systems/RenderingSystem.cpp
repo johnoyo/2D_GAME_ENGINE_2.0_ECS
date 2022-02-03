@@ -215,7 +215,7 @@ unsigned int RenderingSystem::CreateShader(const std::string& vertexShader, cons
 void RenderingSystem::Start(glm::mat4 vpMatrix)
 {
 	std::cout << "Starting rendering system ...\n";
-	vbuffer.total_size = (100 * 100) * 4;
+	vbuffer.total_size = (entities.size()) * 4;
 
 	vbuffer.Initialize(vbuffer.total_size);
 	ibuffer.Make_Indecies(vbuffer.Get_Size());
