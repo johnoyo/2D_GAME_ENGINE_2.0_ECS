@@ -50,7 +50,7 @@ namespace Component {
 	};
 
 	struct Script {
-		std::function<void(float)> init;
+		std::vector<std::function<void(float)>> init;
 		std::vector<std::function<void(float)>> update;
 	};
 

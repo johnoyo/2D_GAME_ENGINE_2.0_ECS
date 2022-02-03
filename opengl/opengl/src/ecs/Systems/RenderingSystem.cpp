@@ -87,7 +87,7 @@ void RenderingSystem::Upadte_Index_Buffer(unsigned int size)
 void RenderingSystem::Init_Vertex_Buffer()
 {
 	vbuffer.Reset();
-	std::cout << transforms.size() << "\n";
+	std::cout << "Transform size: " << transforms.size() << "\n";
 	for (unsigned int i = 0; i < entities.size(); i++) {
 		int j = entities.at(i).transform;
 		int k = entities.at(i).attributes;
@@ -101,7 +101,7 @@ void RenderingSystem::Init_Vertex_Buffer()
 			}
 		}
 	}
-	std::cout << vbuffer.Get_Size() / 4 << "\n";
+	std::cout << "Vertex buffer size: " << vbuffer.Get_Size() / 4 << "\n";
 	ibuffer.Clean();
 	ibuffer.Make_Indecies(vbuffer.Get_Size());
 	Upadte_Index_Buffer(vbuffer.Get_Size());
@@ -111,7 +111,7 @@ void RenderingSystem::Update_Vertex_Buffer_Positions(int playerTransformID)
 {
 	unsigned int indx = 0;
 	for (unsigned int i = 0; i < transforms.size() - 1; i++) {
-		if(i != playerTransformID) vbuffer.Update_Position_On_Quad(indx, transforms.at(i));
+		if(i != playerTransformID && attributes.at(i).Enabled) vbuffer.Update_Position_On_Quad(indx, transforms.at(i));
 		indx += 4;
 	}
 }

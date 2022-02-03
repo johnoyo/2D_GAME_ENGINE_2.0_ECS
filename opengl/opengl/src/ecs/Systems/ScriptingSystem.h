@@ -3,7 +3,7 @@
 
 class ScriptingSystem {
 public:
-	void Start();
+	void Start(int current_level);
 	void Run(int current_level);
 	void Clear();
 };

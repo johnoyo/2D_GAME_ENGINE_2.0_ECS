@@ -100,14 +100,15 @@ int main() {
 /* ---------------------------------------------------------------------------------------------------- */
 
 /* ------------------------------------ Attach scripts to Entities ------------------------------------ */
-	ecs.GetComponent<Component::Script>(player.script, scripts).init = Player::init;
+	ecs.GetComponent<Component::Script>(player.script, scripts).init.push_back(Player::Level_0::init);
 	ecs.GetComponent<Component::Script>(player.script, scripts).update.push_back(Player::Level_0::update);
 
-	ecs.GetComponent<Component::Script>(enemy.script, scripts).init = Enemy::init;
+	ecs.GetComponent<Component::Script>(enemy.script, scripts).init.push_back(Enemy::Level_0::init);
 	ecs.GetComponent<Component::Script>(enemy.script, scripts).update.push_back(Enemy::Level_0::update);
 	ecs.GetComponent<Component::Script>(enemy.script, scripts).update.push_back(Enemy::Level_1::update);
 
-	ecs.GetComponent<Component::Script>(lvlHandler.script, scripts).init = LevelHandler::init;
+	ecs.GetComponent<Component::Script>(lvlHandler.script, scripts).init.push_back(LevelHandler::Level_0::init);
+	ecs.GetComponent<Component::Script>(lvlHandler.script, scripts).init.push_back(LevelHandler::Level_1::init);
 	ecs.GetComponent<Component::Script>(lvlHandler.script, scripts).update.push_back(LevelHandler::update);
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -123,7 +124,7 @@ int main() {
 	windowSystem.Start(1);
 	textureSystem.Start();
 	renderingSystem.Start(cameraSystem.Get_View_Projection_Matrix());
-	scriptingSystem.Start();
+	scriptingSystem.Start(levelSystem.GetCurrentLevel());
 	collisionSystem.Start();
 	gravitySystem.Start(6.0f, -6.0f);
 	cameraSystem.Start();

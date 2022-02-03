@@ -4,23 +4,23 @@
 
 namespace Player {
 
-	void init(float dt) {
-		
-		//ecs.GetComponent<Component::Transform>(player.transform, transforms).position.x = 15.0f;
-		//ecs.GetComponent<Component::Transform>(player.transform, transforms).position.y = 100.0f;
-		//ecs.GetComponent<Component::Transform>(player.transform, transforms).scale.x = 25.0f;
-		//ecs.GetComponent<Component::Transform>(player.transform, transforms).scale.y = 25.0f;
-		//ecs.GetComponent<Component::Material>(player.material, materials).texture = "res/textures/player_r.png";
-
-		ecs.GetComponent<Component::Material>(sps.material, materials).texture = "res/textures/super_mario_tiles.png";
-
-		ecs.GetComponent<Component::Material>(player.material, materials).subTexture.coords = { 0.0f, 11.0f };
-		ecs.GetComponent<Component::Material>(player.material, materials).subTexture.sprite_size = { 16.0f, 16.0f };
-		ecs.GetComponent<Component::Material>(player.material, materials).subTexture.path = ecs.GetComponent<Component::Material>(sps.material, materials).texture;
-
-	}
-
 	namespace Level_0 {
+
+		void init(float dt) {
+
+			//ecs.GetComponent<Component::Transform>(player.transform, transforms).position.x = 15.0f;
+			//ecs.GetComponent<Component::Transform>(player.transform, transforms).position.y = 100.0f;
+			//ecs.GetComponent<Component::Transform>(player.transform, transforms).scale.x = 25.0f;
+			//ecs.GetComponent<Component::Transform>(player.transform, transforms).scale.y = 25.0f;
+			//ecs.GetComponent<Component::Material>(player.material, materials).texture = "res/textures/player_r.png";
+
+			ecs.GetComponent<Component::Material>(sps.material, materials).texture = "res/textures/super_mario_tiles.png";
+
+			ecs.GetComponent<Component::Material>(player.material, materials).subTexture.coords = { 0.0f, 11.0f };
+			ecs.GetComponent<Component::Material>(player.material, materials).subTexture.sprite_size = { 16.0f, 16.0f };
+			ecs.GetComponent<Component::Material>(player.material, materials).subTexture.path = ecs.GetComponent<Component::Material>(sps.material, materials).texture;
+
+		}
 
 		void update(float dt) {
 

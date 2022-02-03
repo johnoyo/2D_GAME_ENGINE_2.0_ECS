@@ -1,6 +1,6 @@
 #include "LevelSystem.h"
 
-void LevelSystem::LoadLevel(const std::string& level_path, GravitySystem& grav, RenderingSystem& rend, VertexBuffer& vertex_buffer, IndexBuffer& index_buffer)
+void LevelSystem::LoadLevel(const std::string& level_path, ScriptingSystem& scr, GravitySystem& grav, RenderingSystem& rend, VertexBuffer& vertex_buffer, IndexBuffer& index_buffer)
 {
 	std::ifstream is(level_path);
 
@@ -67,6 +67,19 @@ void LevelSystem::LoadLevel(const std::string& level_path, GravitySystem& grav, 
 	int enemy_index = 0;
 	int collectible_index = 0;
 
+	for (unsigned int i = 0; i < entities.size(); i++) {
+		Entity::BaseEntity entt = entities.at(i);
+		if (entt.attributes != -1) {
+			attributes.at(entt.attributes).Enabled = false;
+			attributes.at(entt.attributes).CBEnabled = false;
+			attributes.at(entt.attributes).Static = true;
+		}
+		if (entt.material != -1) {
+			materials.at(entt.material).texture = "-";
+			materials.at(entt.material).subTexture.path = "-";
+		}
+	}
+
 	// Update the position of the entities
 	for (unsigned int i = 0; i < p.size(); i++) {
 		if (i == s) continue;
@@ -76,6 +89,7 @@ void LevelSystem::LoadLevel(const std::string& level_path, GravitySystem& grav, 
 			ecs.GetComponent<Component::Transform>(level[level_index].transform, transforms).position.x = p.at(i).j * ecs.GetComponent<Component::Transform>(level[level_index].transform, transforms).scale.x;
 			ecs.GetComponent<Component::Transform>(level[level_index].transform, transforms).position.y = p.at(i).i * ecs.GetComponent<Component::Transform>(level[level_index].transform, transforms).scale.y;
 			ecs.GetComponent<Component::Attributes>(level[level_index].attributes, attributes).Enabled = true;
+			ecs.GetComponent<Component::Attributes>(level[level_index].attributes, attributes).Static = true;
 			ecs.GetComponent<Component::CollisionBox>(level[level_index].collisionBox, collisionBoxes).CBEnabled = true;
 
 			level_index++;
@@ -85,6 +99,7 @@ void LevelSystem::LoadLevel(const std::string& level_path, GravitySystem& grav, 
 			ecs.GetComponent<Component::Transform>(enemy.transform, transforms).position.x = p.at(i).j * ecs.GetComponent<Component::Transform>(enemy.transform, transforms).scale.x;
 			ecs.GetComponent<Component::Transform>(enemy.transform, transforms).position.y = p.at(i).i * ecs.GetComponent<Component::Transform>(enemy.transform, transforms).scale.y;
 			ecs.GetComponent<Component::Attributes>(enemy.attributes, attributes).Enabled = true;
+			ecs.GetComponent<Component::Attributes>(enemy.attributes, attributes).Static = false;
 			ecs.GetComponent<Component::CollisionBox>(enemy.collisionBox, collisionBoxes).CBEnabled = true;
 			enemy_index++;
 		}
@@ -99,6 +114,7 @@ void LevelSystem::LoadLevel(const std::string& level_path, GravitySystem& grav, 
 	ecs.GetComponent<Component::Transform>(player.transform, transforms).position.x = p.at(s).j * ecs.GetComponent<Component::Transform>(player.transform, transforms).scale.x;
 	ecs.GetComponent<Component::Transform>(player.transform, transforms).position.y = p.at(s).i * ecs.GetComponent<Component::Transform>(player.transform, transforms).scale.y;
 	ecs.GetComponent<Component::Attributes>(player.attributes, attributes).Enabled = true;
+	ecs.GetComponent<Component::Attributes>(player.attributes, attributes).Static = false;
 	ecs.GetComponent<Component::CollisionBox>(player.collisionBox, collisionBoxes).CBEnabled = true;
 
 	// NOTE: i have to do this for every entity array
@@ -134,6 +150,7 @@ void LevelSystem::LoadLevel(const std::string& level_path, GravitySystem& grav, 
 	current_level++;
 
 	grav.ResetGravity(6.0f, -6.0f);
+	scr.Start(current_level);
 
 }
 
