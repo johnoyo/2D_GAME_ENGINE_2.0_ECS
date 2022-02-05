@@ -88,19 +88,17 @@ void RenderingSystem::Init_Vertex_Buffer()
 {
 	vbuffer.Reset();
 	std::cout << "Transform size: " << transforms.size() << "\n";
-	for (unsigned int i = 0; i < entities.size(); i++) {
-		int j = entities.at(i).transform;
-		int k = entities.at(i).attributes;
-		if (entities.at(i).transform != -1 && entities.at(i).attributes != -1) {
-			if (attributes.at(k).Enabled) {
-				attributes.at(k).bufferIndex = vbuffer.index;
-				vbuffer.Fill_Buffer({ transforms.at(j).position.x, transforms.at(j).position.y + transforms.at(j).scale.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f), 0);
-				vbuffer.Fill_Buffer({ transforms.at(j).position.x + transforms.at(j).scale.x, transforms.at(j).position.y + transforms.at(j).scale.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f), 0);
-				vbuffer.Fill_Buffer({ transforms.at(j).position.x + transforms.at(j).scale.x , transforms.at(j).position.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f), 0);
-				vbuffer.Fill_Buffer({ transforms.at(j).position.x, transforms.at(j).position.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
-			}
+
+	for (unsigned int i = 0; i < transforms.size(); i++) {
+		if (transforms.at(i).Enabled) {
+			transforms.at(i).bufferIndex = vbuffer.index;
+			vbuffer.Fill_Buffer({ transforms.at(i).position.x, transforms.at(i).position.y + transforms.at(i).scale.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f), 0);
+			vbuffer.Fill_Buffer({ transforms.at(i).position.x + transforms.at(i).scale.x, transforms.at(i).position.y + transforms.at(i).scale.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f), 0);
+			vbuffer.Fill_Buffer({ transforms.at(i).position.x + transforms.at(i).scale.x , transforms.at(i).position.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f), 0);
+			vbuffer.Fill_Buffer({ transforms.at(i).position.x, transforms.at(i).position.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
 		}
 	}
+
 	std::cout << "Vertex buffer size: " << vbuffer.Get_Size() / 4 << "\n";
 	ibuffer.Clean();
 	ibuffer.Make_Indecies(vbuffer.Get_Size());
@@ -111,7 +109,7 @@ void RenderingSystem::Update_Vertex_Buffer_Positions(int playerTransformID)
 {
 	unsigned int indx = 0;
 	for (unsigned int i = 0; i < transforms.size() - 1; i++) {
-		if(i != playerTransformID && attributes.at(i).Enabled) vbuffer.Update_Position_On_Quad(indx, transforms.at(i));
+		if(i != playerTransformID && transforms.at(i).Enabled) vbuffer.Update_Position_On_Quad(indx, transforms.at(i));
 		indx += 4;
 	}
 }

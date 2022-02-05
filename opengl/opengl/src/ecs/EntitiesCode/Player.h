@@ -24,7 +24,11 @@ namespace Player {
 
 		void update(float dt) {
 
-			// Camera follow
+			// Background follow player
+			ecs.GetComponent<Component::Transform>(background.transform, transforms).position.x = ecs.GetComponent<Component::Transform>(player.transform, transforms).position.x + (-windowSystem.Get_Width() / 2.0f);
+			ecs.GetComponent<Component::Transform>(background.transform, transforms).position.y = ecs.GetComponent<Component::Transform>(player.transform, transforms).position.y + (-windowSystem.Get_Height() / 2.0f);
+
+			// Camera follow player
 			cameraSystem.Follow(player, (-windowSystem.Get_Width() / 2.0f), (-windowSystem.Get_Height() / 2.0f));
 
 			// Player movement

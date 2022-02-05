@@ -17,6 +17,7 @@ System ecs = System();
 std::vector<Entity::BaseEntity> entities;
 
 /* ------------------------------- Entities ---------------------------- */
+Entity::BaseEntity background;
 Entity::BaseEntity player;
 Entity::BaseEntity enemy;
 Entity::BaseEntity level[5000];
@@ -25,13 +26,12 @@ Entity::BaseEntity lvlHandler;
 Entity::BaseEntity sps;
 /* --------------------------------------------------------------------- */
 
-/* ------------------------- Component Vector -------------------------- */
+/* ------------------------- Component Vectors -------------------------- */
 std::vector<Component::Transform> transforms;
 std::vector<Component::CollisionBox> collisionBoxes;
 std::vector<Component::Material> materials;
 std::vector<Component::Health> health;
 std::vector<Component::Script> scripts;
-std::vector<Component::Attributes> attributes;
 std::vector<Component::Gravity> gravity;
 /* --------------------------------------------------------------------- */
 
@@ -57,6 +57,7 @@ SoundSystem soundSystem;
 
 int main() {
 /* ------------------------------------ Enroll Entities ------------------------------------ */
+	ecs.EnrollEntity(background, entities);
 	ecs.EnrollEntity(player, entities);
 	ecs.EnrollEntity(enemy, entities);
 	ecs.EnrollEntity(camera, entities);
@@ -66,14 +67,16 @@ int main() {
 	for (unsigned int i = 0; i < 5000; i++)
 		ecs.EnrollEntity(level[i], entities);
 /* ----------------------------------------------------------------------------------------- */
-
+	
 /* ------------------------------------ Add Components to Entities ------------------------------------ */
+	ecs.AddComponent<Component::Transform>(background.transform, entities.at(background.ID).transform, transforms);
+	ecs.AddComponent<Component::Material>(background.material, entities.at(background.ID).material, materials);
+
 	ecs.AddComponent<Component::Transform>(player.transform, entities.at(player.ID).transform, transforms);
 	ecs.AddComponent<Component::Health>(player.health, entities.at(player.ID).health, health);
 	ecs.AddComponent<Component::Script>(player.script, entities.at(player.ID).script, scripts);
 	ecs.AddComponent<Component::Material>(player.material, entities.at(player.ID).material, materials);
 	ecs.AddComponent<Component::CollisionBox>(player.collisionBox, entities.at(player.ID).collisionBox, collisionBoxes);
-	ecs.AddComponent<Component::Attributes>(player.attributes, entities.at(player.ID).attributes, attributes);
 	//ecs.AddComponent<Component::Gravity>(player.gravity, entities.at(player.ID).gravity, gravity);
 
 	ecs.AddComponent<Component::Transform>(enemy.transform, entities.at(enemy.ID).transform, transforms);
@@ -81,14 +84,12 @@ int main() {
 	ecs.AddComponent<Component::Material>(enemy.material, entities.at(enemy.ID).material, materials);
 	ecs.AddComponent<Component::CollisionBox>(enemy.collisionBox, entities.at(enemy.ID).collisionBox, collisionBoxes);
 	ecs.AddComponent<Component::Gravity>(enemy.gravity, entities.at(enemy.ID).gravity, gravity);
-	ecs.AddComponent<Component::Attributes>(enemy.attributes, entities.at(enemy.ID).attributes, attributes);
 	ecs.AddComponent<Component::Gravity>(enemy.gravity, entities.at(enemy.ID).gravity, gravity);
 
 
 	for (unsigned int i = 0; i < 5000; i++) {
 		ecs.AddComponent<Component::Transform>(level[i].transform, entities.at(level[i].ID).transform, transforms);
 		ecs.AddComponent<Component::CollisionBox>(level[i].collisionBox, entities.at(level[i].ID).collisionBox, collisionBoxes);
-		ecs.AddComponent<Component::Attributes>(level[i].attributes, entities.at(level[i].ID).attributes, attributes);
 		ecs.AddComponent<Component::Material>(level[i].material, entities.at(level[i].ID).material, materials);
 	}
 
@@ -104,20 +105,23 @@ int main() {
 	ecs.GetComponent<Component::Script>(player.script, scripts).update.push_back(Player::Level_0::update);
 
 	ecs.GetComponent<Component::Script>(enemy.script, scripts).init.push_back(Enemy::Level_0::init);
+	ecs.GetComponent<Component::Script>(enemy.script, scripts).init.push_back(Enemy::Level_1::init);
 	ecs.GetComponent<Component::Script>(enemy.script, scripts).update.push_back(Enemy::Level_0::update);
 	ecs.GetComponent<Component::Script>(enemy.script, scripts).update.push_back(Enemy::Level_1::update);
 
 	ecs.GetComponent<Component::Script>(lvlHandler.script, scripts).init.push_back(LevelHandler::Level_0::init);
 	ecs.GetComponent<Component::Script>(lvlHandler.script, scripts).init.push_back(LevelHandler::Level_1::init);
-	ecs.GetComponent<Component::Script>(lvlHandler.script, scripts).update.push_back(LevelHandler::update);
+	ecs.GetComponent<Component::Script>(lvlHandler.script, scripts).update.push_back(LevelHandler::Level_0::update);
+	ecs.GetComponent<Component::Script>(lvlHandler.script, scripts).update.push_back(LevelHandler::Level_1::update);
 /* ---------------------------------------------------------------------------------------------------- */
 
 /* ------------------------------------ Init components of Entities ------------------------------------ */
-	ecs.GetComponent<Component::Attributes>(player.attributes, attributes).Static = false;
-	ecs.GetComponent<Component::Attributes>(enemy.attributes, attributes).Static = false;
+	ecs.GetComponent<Component::Transform>(player.transform, transforms).Static = false;
+	ecs.GetComponent<Component::Transform>(enemy.transform, transforms).Static = false;
+	ecs.GetComponent<Component::Transform>(background.transform, transforms).Static = false;
 
 	for (unsigned int i = 0; i < 5000; i++)
-		ecs.GetComponent<Component::Attributes>(level[i].attributes, attributes).Static = true;
+		ecs.GetComponent<Component::Transform>(level[i].transform, transforms).Static = true;
 /* ----------------------------------------------------------------------------------------------------- */
 
 /* ------------------------------------ Start Systems ------------------------------------ */
