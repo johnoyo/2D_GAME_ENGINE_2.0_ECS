@@ -8,9 +8,17 @@ public:
 	void Start();
 	void Run(VertexBuffer& buffer);
 	void Clear();
+
+	bool CollisionBetween(Entity::BaseEntity e0, Entity::BaseEntity e1, VertexBuffer& buffer);
+
 private:
+	bool check_corner_br_tl_bool(glm::vec3 p_br, glm::vec3 e_tl, glm::vec3 e_br);
+	bool check_corner_tr_bl_bool(glm::vec3 p_tr, glm::vec3 e_bl, glm::vec3 e_tr);
+	bool check_corner_tl_br_bool(glm::vec3 p_tl, glm::vec3 e_br, glm::vec3 e_tl);
+	bool check_corner_bl_tr_bool(glm::vec3 p_bl, glm::vec3 e_tr, glm::vec3 e_bl);
+
 	void change_position_x(Entity::BaseEntity& p, VertexBuffer& buffer);
-	void change_position_y(Entity::BaseEntity & p, VertexBuffer& buffer);
+	void change_position_y(Entity::BaseEntity& p, VertexBuffer& buffer);
 
 	bool check_corner_br_tl(VertexBuffer& buffer, Entity::BaseEntity& p, glm::vec3 p_br, glm::vec3 e_tl, glm::vec3 e_br, int axis);
 	bool check_corner_tr_bl(VertexBuffer& buffer, Entity::BaseEntity& p, glm::vec3 p_tr, glm::vec3 e_bl, glm::vec3 e_tr, int axis);

@@ -63,6 +63,49 @@ void CollisionSystem::Clear()
 {
 }
 
+bool CollisionSystem::CollisionBetween(Entity::BaseEntity e0, Entity::BaseEntity e1, VertexBuffer& buffer)
+{
+	bool collision = false;
+
+	collision = check_corner_br_tl_bool(collisionBoxes.at(e0.collisionBox).br, collisionBoxes.at(e1.collisionBox).tl, collisionBoxes.at(e1.collisionBox).br);
+	if (collision) return true;
+
+	collision = check_corner_tr_bl_bool(collisionBoxes.at(e0.collisionBox).tr, collisionBoxes.at(e1.collisionBox).bl, collisionBoxes.at(e1.collisionBox).tr);
+	if (collision) return true;
+
+	collision = check_corner_tl_br_bool(collisionBoxes.at(e0.collisionBox).tl, collisionBoxes.at(e1.collisionBox).br, collisionBoxes.at(e1.collisionBox).tl);
+	if (collision) return true;
+
+	collision = check_corner_bl_tr_bool(collisionBoxes.at(e0.collisionBox).bl, collisionBoxes.at(e1.collisionBox).tr, collisionBoxes.at(e1.collisionBox).bl);
+	if (collision) return true;
+
+	return false;
+}
+
+bool CollisionSystem::check_corner_br_tl_bool(glm::vec3 p_br, glm::vec3 e_tl, glm::vec3 e_br) {
+	if (p_br.y <= e_tl.y && p_br.x >= e_tl.x && p_br.y >= e_br.y && p_br.x <= e_br.x)
+		return true;
+	return false;
+}
+
+bool CollisionSystem::check_corner_tr_bl_bool(glm::vec3 p_tr, glm::vec3 e_bl, glm::vec3 e_tr) {
+	if (p_tr.y >= e_bl.y && p_tr.x >= e_bl.x && p_tr.y <= e_tr.y && p_tr.x <= e_tr.x)
+		return true;
+	return false;
+}
+
+bool CollisionSystem::check_corner_tl_br_bool(glm::vec3 p_tl, glm::vec3 e_br, glm::vec3 e_tl) {
+	if (p_tl.y >= e_br.y && p_tl.x <= e_br.x && p_tl.y <= e_tl.y && p_tl.x >= e_tl.x)
+		return true;
+	return false;
+}
+
+bool CollisionSystem::check_corner_bl_tr_bool(glm::vec3 p_bl, glm::vec3 e_tr, glm::vec3 e_bl) {
+	if (p_bl.y <= e_tr.y && p_bl.x <= e_tr.x && p_bl.y >= e_bl.y && p_bl.x >= e_bl.x)
+		return true;
+	return false;
+}
+
 void CollisionSystem::change_position_x(Entity::BaseEntity& p, VertexBuffer& buffer) {
 
 	glm::vec3 tr = transforms.at(p.transform).position;

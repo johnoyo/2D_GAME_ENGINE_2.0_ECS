@@ -47,6 +47,9 @@ namespace Player {
 			if (inputSystem.GetKeyDown(windowSystem.Get_Window(), GLFW_KEY_W, GLFW_PRESS)) 
 				ecs.GetComponent<Component::Transform>(player.transform, transforms).position.y += 6.0f;
 
+			if (collisionSystem.CollisionBetween(player, enemy, renderingSystem.Get_Vertex_Buffer()))
+				std::cout << "Player collided with enemy!!!\n";
+
 			// NOTE: Maybe move this inside the gravity system??? 
 
 			// Player movement with gravity enabled
