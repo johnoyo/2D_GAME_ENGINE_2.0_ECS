@@ -69,7 +69,7 @@ void LevelSystem::LoadLevel(const std::string& level_path, ScriptingSystem& scr,
 
 	for (unsigned int i = 0; i < entities.size(); i++) {
 		Entity::BaseEntity entt = entities.at(i);
-		if (entt.attributes != -1) {
+		if (entt.transform != -1) {
 			transforms.at(entt.transform).Static = true;
 			transforms.at(entt.transform).Enabled = false;
 		}

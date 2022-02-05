@@ -9,7 +9,7 @@ namespace LevelHandler {
 
 		void init(float dt) {
 			std::cout << "Calling level init 0\n";
-			levelSystem.LoadLevel("res/levels/test1.txt", scriptingSystem, gravitySystem, renderingSystem, renderingSystem.Get_Vertex_Buffer(), renderingSystem.Get_Index_Buffer(), background);
+			levelSystem.LoadLevel("res/levels/test3.txt", scriptingSystem, gravitySystem, renderingSystem, renderingSystem.Get_Vertex_Buffer(), renderingSystem.Get_Index_Buffer(), background);
 		}
 
 		void update(float dt) {

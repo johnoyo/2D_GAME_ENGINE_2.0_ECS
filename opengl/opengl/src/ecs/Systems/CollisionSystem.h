@@ -6,7 +6,8 @@
 class CollisionSystem {
 public:
 	void Start();
-	void Run(VertexBuffer& buffer);
+	void Run0(VertexBuffer& buffer);
+	void Run1(VertexBuffer& buffer);
 	void Clear();
 
 	bool CollisionBetween(Entity::BaseEntity e0, Entity::BaseEntity e1, VertexBuffer& buffer);
@@ -30,6 +31,6 @@ private:
 	bool check_side_b_t(VertexBuffer& buffer, Entity::BaseEntity& p, glm::vec3 p_tl, glm::vec3 p_tr, glm::vec3 e_bl, glm::vec3 e_br, glm::vec3 e_tl, int axis);
 	bool check_side_t_b(VertexBuffer& buffer, Entity::BaseEntity& p, glm::vec3 p_br, glm::vec3 p_bl, glm::vec3 e_tr, glm::vec3 e_tl, glm::vec3 e_bl, int axis);
 	
-	void Check_For_Collisions(Entity::BaseEntity& p, int collisionBox, int bufferIndex, VertexBuffer& buffer, int axis);
+	void Check_For_Collisions(Entity::BaseEntity& p, int collisionBox, VertexBuffer& buffer, int axis);
 
 };

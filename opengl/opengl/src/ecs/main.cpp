@@ -11,6 +11,7 @@
 #include "Systems\GravitySystem.h"
 #include "Systems\LevelSystem.h"
 #include "Systems\SoundSystem.h"
+#include "Systems\TransformSystem.h"
 
 System ecs = System();
 
@@ -46,6 +47,7 @@ CollisionSystem collisionSystem;
 GravitySystem gravitySystem;
 LevelSystem levelSystem;
 SoundSystem soundSystem;
+TransformSystem transformSystem;
 /* --------------------------------------------------------------------------------- */
 
 #include "EntitiesCode\Player.h"
@@ -125,7 +127,7 @@ int main() {
 /* ----------------------------------------------------------------------------------------------------- */
 
 /* ------------------------------------ Start Systems ------------------------------------ */
-	windowSystem.Start(1);
+	windowSystem.Start(0);
 	textureSystem.Start();
 	renderingSystem.Start(cameraSystem.Get_View_Projection_Matrix());
 	scriptingSystem.Start(levelSystem.GetCurrentLevel());
@@ -133,6 +135,7 @@ int main() {
 	gravitySystem.Start(6.0f, -6.0f);
 	cameraSystem.Start();
 	soundSystem.Start();
+	transformSystem.Start();
 /* --------------------------------------------------------------------------------------- */
 
 	static double limitFPS = 1.0 / 60.0;
@@ -156,7 +159,10 @@ int main() {
 			gravitySystem.Run();
 			textureSystem.Run(renderingSystem);
 			// NOTE: if the ground on which the player lands is very thin, if he has a lot of speed he is gonna clip through
-			collisionSystem.Run(renderingSystem.Get_Vertex_Buffer());
+			//collisionSystem.Run0(renderingSystem.Get_Vertex_Buffer());
+			// NOTE: Possible solution to separate transform and collision system nad possibly increase performance
+			transformSystem.Run(renderingSystem.Get_Vertex_Buffer());
+			collisionSystem.Run1(renderingSystem.Get_Vertex_Buffer());
 /* ------------------------------------------------------------------------------------- */
 			updates++;
 			deltaTime--;

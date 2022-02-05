@@ -13,7 +13,6 @@ namespace Entity {
 		int gravity = -1;
 		int script = -1;
 		int health = -1;
-		int attributes = -1;
 	};
 
 }

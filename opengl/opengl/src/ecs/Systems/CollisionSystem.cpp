@@ -20,7 +20,48 @@ void CollisionSystem::Start()
 	}
 }
 
-void CollisionSystem::Run(VertexBuffer& buffer)
+void CollisionSystem::Run0(VertexBuffer& buffer)
+{
+	// update collision boxes and move the transforms of non-static objects
+	for (unsigned int i = 0; i < entities.size(); i++) {
+		if (entities.at(i).transform != -1 && transforms.at(entities.at(i).transform).Static == false) {
+			Entity::BaseEntity entt = entities.at(i);
+
+			glm::vec3 tr = transforms.at(entt.transform).position;
+			glm::vec3 sc = transforms.at(entt.transform).scale;
+
+			// move player on x-axis
+			buffer.Update_PositionX_On_Quad(transforms.at(entt.transform).bufferIndex, transforms.at(entt.transform));
+
+			// update collision box on x-axis
+			if (entities.at(i).collisionBox != -1) {
+				collisionBoxes.at(entt.collisionBox).tl.x = tr.x;
+				collisionBoxes.at(entt.collisionBox).tr.x = tr.x + sc.x;
+				collisionBoxes.at(entt.collisionBox).br.x = tr.x + sc.x;
+				collisionBoxes.at(entt.collisionBox).bl.x = tr.x;
+			}
+
+			// collision check on x-axis
+			if(entities.at(i).collisionBox != -1) Check_For_Collisions(entt, entt.collisionBox, buffer, X_AXIS);
+
+			// move player on y-axis
+			buffer.Update_PositionY_On_Quad(transforms.at(entt.transform).bufferIndex, transforms.at(entt.transform));
+
+			// update collision box on y-axis
+			if (entities.at(i).collisionBox != -1) {
+				collisionBoxes.at(entt.collisionBox).tl.y = tr.y + sc.y;
+				collisionBoxes.at(entt.collisionBox).tr.y = tr.y + sc.y;
+				collisionBoxes.at(entt.collisionBox).br.y = tr.y;
+				collisionBoxes.at(entt.collisionBox).bl.y = tr.y;
+			}
+
+			// collision check on y-axis
+			if (entities.at(i).collisionBox != -1) Check_For_Collisions(entt, entt.collisionBox, buffer, Y_AXIS);
+		}
+	}
+}
+
+void CollisionSystem::Run1(VertexBuffer& buffer)
 {
 	// update collision boxes of non-static objects
 	for (unsigned int i = 0; i < entities.size(); i++) {
@@ -38,11 +79,9 @@ void CollisionSystem::Run(VertexBuffer& buffer)
 				collisionBoxes.at(entt.collisionBox).bl.x = tr.x;
 			}
 
-			// move player on x-axis
-			buffer.Update_PositionX_On_Quad(transforms.at(entt.transform).bufferIndex, transforms.at(entt.transform));
 			// collision check on x-axis
-			if(entities.at(i).collisionBox != -1) Check_For_Collisions(entt, entt.collisionBox, transforms.at(entt.transform).bufferIndex, buffer, X_AXIS);
-
+			if (entities.at(i).collisionBox != -1) Check_For_Collisions(entt, entt.collisionBox, buffer, X_AXIS);
+			
 			// update collision box on y-axis
 			if (entities.at(i).collisionBox != -1) {
 				collisionBoxes.at(entt.collisionBox).tl.y = tr.y + sc.y;
@@ -51,10 +90,9 @@ void CollisionSystem::Run(VertexBuffer& buffer)
 				collisionBoxes.at(entt.collisionBox).bl.y = tr.y;
 			}
 
-			// move player on y-axis
-			buffer.Update_PositionY_On_Quad(transforms.at(entt.transform).bufferIndex, transforms.at(entt.transform));
 			// collision check on y-axis
-			if (entities.at(i).collisionBox != -1) Check_For_Collisions(entt, entt.collisionBox, transforms.at(entt.transform).bufferIndex, buffer, Y_AXIS);
+			if (entities.at(i).collisionBox != -1) Check_For_Collisions(entt, entt.collisionBox, buffer, Y_AXIS);
+			
 		}
 	}
 }
@@ -134,7 +172,6 @@ void CollisionSystem::change_position_y(Entity::BaseEntity& p, VertexBuffer& buf
 
 	// move player on y-axis
 	buffer.Update_PositionY_On_Quad(transforms.at(p.transform).bufferIndex, transforms.at(p.transform));
-
 }
 
 bool CollisionSystem::check_corner_br_tl(VertexBuffer& buffer, Entity::BaseEntity& p, glm::vec3 p_br, glm::vec3 e_tl, glm::vec3 e_br, int axis)
@@ -264,7 +301,7 @@ bool CollisionSystem::check_side_t_b(VertexBuffer& buffer, Entity::BaseEntity& p
 	return false;
 }
 
-void CollisionSystem::Check_For_Collisions(Entity::BaseEntity& p, int collisionBox, int bufferIndex, VertexBuffer& buffer, int axis)
+void CollisionSystem::Check_For_Collisions(Entity::BaseEntity& p, int collisionBox, VertexBuffer& buffer, int axis)
 {
 	unsigned int i = 0;
 	if (p.gravity != -1/* && axis == Y_AXIS*/) {
