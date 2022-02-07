@@ -61,7 +61,7 @@ void CollisionSystem::Run0(VertexBuffer& buffer)
 	}
 }
 
-void CollisionSystem::Run1(VertexBuffer& buffer)
+void CollisionSystem::Run(VertexBuffer& buffer)
 {
 	// update collision boxes of non-static objects
 	for (unsigned int i = 0; i < entities.size(); i++) {

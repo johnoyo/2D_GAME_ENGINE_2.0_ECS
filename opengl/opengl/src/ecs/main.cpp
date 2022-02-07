@@ -21,6 +21,7 @@ std::vector<Entity::BaseEntity> entities;
 Entity::BaseEntity background;
 Entity::BaseEntity player;
 Entity::BaseEntity enemy;
+Entity::BaseEntity wall[200];
 Entity::BaseEntity level[5000];
 Entity::BaseEntity camera;
 Entity::BaseEntity lvlHandler;
@@ -66,10 +67,14 @@ int main() {
 	ecs.EnrollEntity(lvlHandler, entities);
 	ecs.EnrollEntity(sps, entities);
 
+	for (unsigned int i = 0; i < 200; i++)
+		ecs.EnrollEntity(wall[i], entities);
+
 	for (unsigned int i = 0; i < 5000; i++)
 		ecs.EnrollEntity(level[i], entities);
+
 /* ----------------------------------------------------------------------------------------- */
-	
+	std::cout << "Entities size: " << entities.size() << "\n";
 /* ------------------------------------ Add Components to Entities ------------------------------------ */
 	ecs.AddComponent<Component::Transform>(background.transform, entities.at(background.ID).transform, transforms);
 	ecs.AddComponent<Component::Material>(background.material, entities.at(background.ID).material, materials);
@@ -88,18 +93,26 @@ int main() {
 	ecs.AddComponent<Component::Gravity>(enemy.gravity, entities.at(enemy.ID).gravity, gravity);
 	ecs.AddComponent<Component::Gravity>(enemy.gravity, entities.at(enemy.ID).gravity, gravity);
 
+	for (unsigned int i = 0; i < 200; i++) {
+		ecs.AddComponent<Component::Transform>(wall[i].transform, entities.at(wall[i].ID).transform, transforms);
+		ecs.AddComponent<Component::CollisionBox>(wall[i].collisionBox, entities.at(wall[i].ID).collisionBox, collisionBoxes);
+		ecs.AddComponent<Component::Material>(wall[i].material, entities.at(wall[i].ID).material, materials);
+	}
 
 	for (unsigned int i = 0; i < 5000; i++) {
 		ecs.AddComponent<Component::Transform>(level[i].transform, entities.at(level[i].ID).transform, transforms);
-		ecs.AddComponent<Component::CollisionBox>(level[i].collisionBox, entities.at(level[i].ID).collisionBox, collisionBoxes);
+		//ecs.AddComponent<Component::CollisionBox>(level[i].collisionBox, entities.at(level[i].ID).collisionBox, collisionBoxes);
 		ecs.AddComponent<Component::Material>(level[i].material, entities.at(level[i].ID).material, materials);
 	}
+
 
 	ecs.AddComponent<Component::Transform>(camera.transform, entities.at(camera.ID).transform, transforms);
 
 	ecs.AddComponent<Component::Script>(lvlHandler.script, entities.at(lvlHandler.ID).script, scripts);
 
 	ecs.AddComponent<Component::Material>(sps.material, entities.at(sps.ID).material, materials);
+
+	std::cout << "Materials size: " << materials.size() << "\n";
 /* ---------------------------------------------------------------------------------------------------- */
 
 /* ------------------------------------ Attach scripts to Entities ------------------------------------ */
@@ -122,8 +135,12 @@ int main() {
 	ecs.GetComponent<Component::Transform>(enemy.transform, transforms).Static = false;
 	ecs.GetComponent<Component::Transform>(background.transform, transforms).Static = false;
 
+	for (unsigned int i = 0; i < 200; i++)
+		ecs.GetComponent<Component::Transform>(wall[i].transform, transforms).Static = true;
+
 	for (unsigned int i = 0; i < 5000; i++)
 		ecs.GetComponent<Component::Transform>(level[i].transform, transforms).Static = true;
+
 /* ----------------------------------------------------------------------------------------------------- */
 
 /* ------------------------------------ Start Systems ------------------------------------ */
@@ -156,13 +173,13 @@ int main() {
 		while (deltaTime >= 1.0) {			
 /* ------------------------------------ Run Systems ------------------------------------ */
 			scriptingSystem.Run(levelSystem.GetCurrentLevel());
-			gravitySystem.Run();
 			textureSystem.Run(renderingSystem);
+			gravitySystem.Run();
 			// NOTE: if the ground on which the player lands is very thin, if he has a lot of speed he is gonna clip through
 			//collisionSystem.Run0(renderingSystem.Get_Vertex_Buffer());
 			// NOTE: Possible solution to separate transform and collision system nad possibly increase performance
 			transformSystem.Run(renderingSystem.Get_Vertex_Buffer());
-			collisionSystem.Run1(renderingSystem.Get_Vertex_Buffer());
+			collisionSystem.Run(renderingSystem.Get_Vertex_Buffer());
 /* ------------------------------------------------------------------------------------- */
 			updates++;
 			deltaTime--;

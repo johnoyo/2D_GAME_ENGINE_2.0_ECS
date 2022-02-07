@@ -7,7 +7,7 @@ class CollisionSystem {
 public:
 	void Start();
 	void Run0(VertexBuffer& buffer);
-	void Run1(VertexBuffer& buffer);
+	void Run(VertexBuffer& buffer);
 	void Clear();
 
 	bool CollisionBetween(Entity::BaseEntity e0, Entity::BaseEntity e1, VertexBuffer& buffer);

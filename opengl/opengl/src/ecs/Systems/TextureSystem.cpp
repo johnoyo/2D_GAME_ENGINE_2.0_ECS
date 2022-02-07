@@ -50,7 +50,7 @@ float TextureSystem::Find(const std::string& path)
 	for (int i = 0; i < map.size(); i++) {
 		if (path == map.at(i)) return (float)i;
 	}
-	std::cerr << "Error! Could not find the file specified. Loading it from scratch!" << "\n";
+	std::cerr << "Error! Could not find the file specified (" << path << "). Loading it from scratch!" << "\n";
 	Load_Texture(path);
 	return (float)map.size() - 1;
 }
@@ -61,10 +61,6 @@ void TextureSystem::Start()
 
 	for (unsigned int i = 0; i < materials.size(); i++) {
 		if (materials.at(i).texture != "-") Load_Texture(materials.at(i).texture);
-	}
-
-	for (int i = 0; i < map.size(); i++) {
-		std::cout << map.at(i) << "\n";
 	}
 }
 

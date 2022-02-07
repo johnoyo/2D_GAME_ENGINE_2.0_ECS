@@ -14,6 +14,7 @@ extern std::vector<Entity::BaseEntity> entities;
 extern Entity::BaseEntity background;
 extern Entity::BaseEntity player;
 extern Entity::BaseEntity enemy;
+extern Entity::BaseEntity wall[200];
 extern Entity::BaseEntity level[5000];
 extern Entity::BaseEntity lvlHandler;
 extern Entity::BaseEntity camera;
