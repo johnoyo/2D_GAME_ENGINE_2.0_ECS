@@ -68,12 +68,14 @@ void TextureSystem::Run(RenderingSystem& rend)
 {
 	unsigned int indx = 0;
 	for (unsigned int i = 0; i < materials.size(); i++) {
-		if (materials.at(i).subTexture.path == "-") {
-			rend.Get_Vertex_Buffer().Update_Material_On_Quad(indx, materials.at(i).color, Find(materials.at(i).texture));
-		} else {
-			rend.Get_Vertex_Buffer().Update_Material_On_Quad(indx, materials.at(i).color, Find(materials.at(i).subTexture.path), materials.at(i).subTexture.coords, size.at(Find(materials.at(i).subTexture.path)), materials.at(i).subTexture.sprite_size);
+		if (materials.at(i).Enabled) {
+			if (materials.at(i).subTexture.path == "-") {
+				rend.Get_Vertex_Buffer().Update_Material_On_Quad(indx, materials.at(i).color, Find(materials.at(i).texture));
+			} else {
+				rend.Get_Vertex_Buffer().Update_Material_On_Quad(indx, materials.at(i).color, Find(materials.at(i).subTexture.path), materials.at(i).subTexture.coords, size.at(Find(materials.at(i).subTexture.path)), materials.at(i).subTexture.sprite_size);
+			}
+			indx += 4;
 		}
-		indx += 4;
 	}
 
 	for (unsigned int i = 0; i < current_index; i++) {

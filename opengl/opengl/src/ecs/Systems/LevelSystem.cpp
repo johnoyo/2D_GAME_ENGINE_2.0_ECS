@@ -68,6 +68,7 @@ void LevelSystem::LoadLevel(const std::string& level_path, ScriptingSystem& scr,
 	int enemy_index = 0;
 	int collectible_index = 0;
 
+	// Reset all component properties of entities
 	for (unsigned int i = 0; i < entities.size(); i++) {
 		Entity::BaseEntity entt = entities.at(i);
 		if (entt.transform != -1) {
@@ -77,6 +78,7 @@ void LevelSystem::LoadLevel(const std::string& level_path, ScriptingSystem& scr,
 		if (entt.material != -1) {
 			materials.at(entt.material).texture = "-";
 			materials.at(entt.material).subTexture.path = "-";
+			materials.at(entt.material).Enabled = false;
 		}
 		if (entt.script != -1) {
 			scripts.at(entt.script).Enabled = false;
@@ -88,6 +90,7 @@ void LevelSystem::LoadLevel(const std::string& level_path, ScriptingSystem& scr,
 	ecs.GetComponent<Component::Transform>(background.transform, transforms).position.y = 0.0f;
 	ecs.GetComponent<Component::Transform>(background.transform, transforms).scale.x = 1920.0f;
 	ecs.GetComponent<Component::Transform>(background.transform, transforms).scale.y = 1080.0f;
+	ecs.GetComponent<Component::Material>(background.material, materials).Enabled = true;
 	ecs.GetComponent<Component::Material>(background.material, materials).texture = "res/textures/brickWall_2.jpg";
 	ecs.GetComponent<Component::Transform>(background.transform, transforms).Static = false;
 	ecs.GetComponent<Component::Transform>(background.transform, transforms).Enabled = true;
@@ -105,7 +108,7 @@ void LevelSystem::LoadLevel(const std::string& level_path, ScriptingSystem& scr,
 			ecs.GetComponent<Component::Transform>(level[level_index].transform, transforms).position.y = p.at(i).i * ecs.GetComponent<Component::Transform>(level[level_index].transform, transforms).scale.y;
 			ecs.GetComponent<Component::Transform>(level[level_index].transform, transforms).Static = true;
 			ecs.GetComponent<Component::Transform>(level[level_index].transform, transforms).Enabled = true;
-			//ecs.GetComponent<Component::CollisionBox>(level[level_index].collisionBox, collisionBoxes).Enabled = true;
+			ecs.GetComponent<Component::Material>(level[level_index].material, materials).Enabled = true;
 			ecs.GetComponent<Component::Material>(level[level_index].material, materials).texture = "res/textures/coinA.png";
 
 			level_index++;
@@ -118,6 +121,7 @@ void LevelSystem::LoadLevel(const std::string& level_path, ScriptingSystem& scr,
 			ecs.GetComponent<Component::Transform>(wall[wall_index].transform, transforms).Static = true;
 			ecs.GetComponent<Component::Transform>(wall[wall_index].transform, transforms).Enabled = true;
 			ecs.GetComponent<Component::CollisionBox>(wall[wall_index].collisionBox, collisionBoxes).Enabled = true;
+			ecs.GetComponent<Component::Material>(wall[wall_index].material, materials).Enabled = true;
 			ecs.GetComponent<Component::Material>(wall[wall_index].material, materials).texture = "res/textures/brick_3.png";
 
 			wall_index++;
@@ -131,6 +135,7 @@ void LevelSystem::LoadLevel(const std::string& level_path, ScriptingSystem& scr,
 			ecs.GetComponent<Component::Transform>(enemy.transform, transforms).Enabled = true;
 			ecs.GetComponent<Component::CollisionBox>(enemy.collisionBox, collisionBoxes).Enabled = true;
 			ecs.GetComponent<Component::Script>(enemy.script, scripts).Enabled = true;
+			ecs.GetComponent<Component::Material>(enemy.material, materials).Enabled = true;
 			enemy_index++;
 		}
 	}
@@ -148,19 +153,7 @@ void LevelSystem::LoadLevel(const std::string& level_path, ScriptingSystem& scr,
 	ecs.GetComponent<Component::Transform>(player.transform, transforms).Enabled = true;
 	ecs.GetComponent<Component::CollisionBox>(player.collisionBox, collisionBoxes).Enabled = true;
 	ecs.GetComponent<Component::Script>(player.script, scripts).Enabled = true;
-
-
-	// NOTE: i have to do this for every entity array
-	// Disable unsused entities by this level
-	for (unsigned int i = level_index; i < 5000; i++) {
-		ecs.GetComponent<Component::Transform>(level[i].transform, transforms).Enabled = false;
-		//ecs.GetComponent<Component::CollisionBox>(level[i].collisionBox, collisionBoxes).Enabled = false;
-	}
-
-	for (unsigned int i = wall_index; i < 200; i++) {
-		ecs.GetComponent<Component::Transform>(wall[i].transform, transforms).Enabled = false;
-		ecs.GetComponent<Component::CollisionBox>(wall[i].collisionBox, collisionBoxes).Enabled = false;
-	}
+	ecs.GetComponent<Component::Material>(player.material, materials).Enabled = true;
 
 	// Recalculate all collision boxes
 	for (unsigned int i = 0; i < entities.size(); i++) {

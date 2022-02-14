@@ -16,7 +16,7 @@ namespace Player {
 
 			ecs.GetComponent<Component::Material>(sps.material, materials).texture = "res/textures/super_mario_tiles.png";
 
-			ecs.GetComponent<Component::Material>(player.material, materials).subTexture.coords = { 0.0f, 11.0f };
+			ecs.GetComponent<Component::Material>(player.material, materials).subTexture.coords = { 6.0f, 1.0f };
 			ecs.GetComponent<Component::Material>(player.material, materials).subTexture.sprite_size = { 16.0f, 16.0f };
 			ecs.GetComponent<Component::Material>(player.material, materials).subTexture.path = ecs.GetComponent<Component::Material>(sps.material, materials).texture;
 
