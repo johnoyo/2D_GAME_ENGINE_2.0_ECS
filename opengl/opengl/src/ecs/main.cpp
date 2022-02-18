@@ -179,6 +179,7 @@ int main() {
 			// NOTE: Possible solution to separate transform and collision system nad possibly increase performance
 			transformSystem.Run(renderingSystem.Get_Vertex_Buffer());
 			collisionSystem.Run(renderingSystem.Get_Vertex_Buffer());
+			transformSystem.Update(renderingSystem.Get_Vertex_Buffer(), collisionSystem.entities_to_be_updated);
 /* ------------------------------------------------------------------------------------- */
 			updates++;
 			deltaTime--;

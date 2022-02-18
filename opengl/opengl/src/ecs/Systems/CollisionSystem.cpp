@@ -156,7 +156,8 @@ void CollisionSystem::change_position_x(Entity::BaseEntity& p, VertexBuffer& buf
 	collisionBoxes.at(p.collisionBox).bl.x = tr.x;
 
 	// move player on x-axis
-	buffer.Update_PositionX_On_Quad(transforms.at(p.transform).bufferIndex, transforms.at(p.transform));
+	entities_to_be_updated.push_back(p.transform);
+	//buffer.Update_PositionX_On_Quad(transforms.at(p.transform).bufferIndex, transforms.at(p.transform));
 }
 
 void CollisionSystem::change_position_y(Entity::BaseEntity& p, VertexBuffer& buffer) {
@@ -171,7 +172,8 @@ void CollisionSystem::change_position_y(Entity::BaseEntity& p, VertexBuffer& buf
 	collisionBoxes.at(p.collisionBox).bl.y = tr.y;
 
 	// move player on y-axis
-	buffer.Update_PositionY_On_Quad(transforms.at(p.transform).bufferIndex, transforms.at(p.transform));
+	entities_to_be_updated.push_back(p.transform);
+	//buffer.Update_PositionY_On_Quad(transforms.at(p.transform).bufferIndex, transforms.at(p.transform));
 }
 
 bool CollisionSystem::check_corner_br_tl(VertexBuffer& buffer, Entity::BaseEntity& p, glm::vec3 p_br, glm::vec3 e_tl, glm::vec3 e_br, int axis)

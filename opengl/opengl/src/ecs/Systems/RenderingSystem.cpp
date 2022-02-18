@@ -246,17 +246,32 @@ void VertexBuffer::Fill_Buffer(glm::vec2 position, glm::vec4 color, glm::vec2 te
 
 void VertexBuffer::Update_Position_On_Quad(unsigned int indx, Component::Transform tr)
 {
-	buffer[indx].position.x = tr.position.x;
-	buffer[indx].position.y = tr.position.y + tr.scale.y;
+	// TODO: add transformation matrix for rotation here
+	glm::mat4 transform = glm::translate(glm::mat4(1.0f), tr.position)
+						* glm::rotate(glm::mat4(1.0f), glm::radians(tr.rotation), glm::vec3(0.0f, 0.0f, 1.0f))
+						* glm::scale(glm::mat4(1.0f), glm::vec3(tr.scale.x, tr.scale.y, 1.0f));
+
+	glm::vec4 quad_vertex_position[4];
+	quad_vertex_position[0] = { 0.0f, 1.0f, 0.0f, 1.0f };
+	quad_vertex_position[1] = { 1.0f, 1.0f, 0.0f, 1.0f };
+	quad_vertex_position[2] = { 1.0f, 0.0f, 0.0f, 1.0f };
+	quad_vertex_position[3] = { 0.0f, 0.0f, 0.0f, 1.0f };
+
+	//buffer[indx].position.x = tr.position.x;
+	//buffer[indx].position.y = tr.position.y + tr.scale.y;
+	buffer[indx].position = transform * quad_vertex_position[0];
 	indx++;
-	buffer[indx].position.x = tr.position.x + tr.scale.x;
-	buffer[indx].position.y = tr.position.y + tr.scale.y;
+	//buffer[indx].position.x = tr.position.x + tr.scale.x;
+	//buffer[indx].position.y = tr.position.y + tr.scale.y;
+	buffer[indx].position = transform * quad_vertex_position[1];
 	indx++;
-	buffer[indx].position.x = tr.position.x + tr.scale.x;
-	buffer[indx].position.y = tr.position.y;
+	//buffer[indx].position.x = tr.position.x + tr.scale.x;
+	//buffer[indx].position.y = tr.position.y;
+	buffer[indx].position = transform * quad_vertex_position[2];
 	indx++;
-	buffer[indx].position.x = tr.position.x;
-	buffer[indx].position.y = tr.position.y;
+	//buffer[indx].position.x = tr.position.x;
+	//buffer[indx].position.y = tr.position.y;
+	buffer[indx].position = transform * quad_vertex_position[3];
 	indx++;
 }
 

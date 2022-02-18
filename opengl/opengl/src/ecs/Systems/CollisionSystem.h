@@ -11,6 +11,7 @@ public:
 	void Clear();
 
 	bool CollisionBetween(Entity::BaseEntity e0, Entity::BaseEntity e1, VertexBuffer& buffer);
+	std::vector<int> entities_to_be_updated;
 
 private:
 	bool check_corner_br_tl_bool(glm::vec3 p_br, glm::vec3 e_tl, glm::vec3 e_br);
