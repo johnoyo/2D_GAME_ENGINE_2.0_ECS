@@ -1,19 +1,19 @@
 #include "GravitySystem.h"
 
-void GravitySystem::Start(float gravityForce, float thres)
+void GravitySystem::Start(float GravityForce, float thres)
 {
-	force = gravityForce;
+	force = GravityForce;
 	threshold = thres;
 }
 
-void GravitySystem::ResetGravity(float gravityForce, float thres)
+void GravitySystem::ResetGravity(float GravityForce, float thres)
 {
-	// Reset gravity forces
-	force = gravityForce;
+	// Reset Gravity forces
+	force = GravityForce;
 	threshold = thres;
 
-	for (unsigned int i = 0; i < gravity.size(); i++) {
-			gravity.at(i).appliedForce = 0.0f;
+	for (unsigned int i = 0; i < Gravity.size(); i++) {
+			Gravity.at(i).appliedForce = 0.0f;
 	}
 }
 
@@ -21,15 +21,15 @@ void GravitySystem::Run()
 {
 	for (unsigned int i = 0; i < entities.size(); i++) {
 		Entity::BaseEntity entt = entities.at(i);
-		if (entt.gravity != -1 && gravity.at(entt.gravity).Enabled && !gravity.at(entt.gravity).isGrounded) {
+		if (entt.Gravity != -1 && Gravity.at(entt.Gravity).Enabled && !Gravity.at(entt.Gravity).isGrounded) {
 
-			if (!gravity.at(entt.gravity).collides) gravity.at(entt.gravity).appliedForce += -0.1f * force;
-			else gravity.at(entt.gravity).appliedForce = -1.0f;
+			if (!Gravity.at(entt.Gravity).collides) Gravity.at(entt.Gravity).appliedForce += -0.1f * force;
+			else Gravity.at(entt.Gravity).appliedForce = -1.0f;
 
-			transforms.at(entt.transform).position.y += 2.0f * gravity.at(entt.gravity).appliedForce;
+			Transform.at(entt.Transform).position.y += 2.0f * Gravity.at(entt.Gravity).appliedForce;
 		}
-		else if (entt.gravity != -1 && gravity.at(entt.gravity).Enabled && gravity.at(entt.gravity).isGrounded) {
-			if (gravity.at(entt.gravity).appliedForce <= threshold) gravity.at(entt.gravity).appliedForce = threshold;
+		else if (entt.Gravity != -1 && Gravity.at(entt.Gravity).Enabled && Gravity.at(entt.Gravity).isGrounded) {
+			if (Gravity.at(entt.Gravity).appliedForce <= threshold) Gravity.at(entt.Gravity).appliedForce = threshold;
 		}
 	}
 }

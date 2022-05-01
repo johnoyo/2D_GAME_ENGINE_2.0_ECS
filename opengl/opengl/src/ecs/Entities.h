@@ -6,13 +6,14 @@ namespace Entity {
 	struct BaseEntity
 	{
 		int ID = -1;
-		int transform = -1;
-		int collisionBox = -1;
-		int material = -1;
-		int animation = -1;
-		int gravity = -1;
-		int script = -1;
-		int health = -1;
+		int Transform = -1;
+		int CollisionBox = -1;
+		int Material = -1;
+		int Animation = -1;
+		int Gravity = -1;
+		int Script = -1;
+		int Health = -1;
+		int Shadow = -1;
 	};
 
 }

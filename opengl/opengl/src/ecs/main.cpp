@@ -29,12 +29,13 @@ Entity::BaseEntity sps;
 /* --------------------------------------------------------------------- */
 
 /* ------------------------- Component Vectors -------------------------- */
-std::vector<Component::Transform> transforms;
-std::vector<Component::CollisionBox> collisionBoxes;
-std::vector<Component::Material> materials;
-std::vector<Component::Health> health;
-std::vector<Component::Script> scripts;
-std::vector<Component::Gravity> gravity;
+std::vector<Component::Transform> Transform;
+std::vector<Component::CollisionBox> CollisionBox;
+std::vector<Component::Material> Material;
+std::vector<Component::Health> Health;
+std::vector<Component::Script> Script;
+std::vector<Component::Gravity> Gravity;
+std::vector<Component::Shadow> Shadow;
 /* --------------------------------------------------------------------- */
 
 /* ------------------------------------ Systems ------------------------------------ */
@@ -55,90 +56,91 @@ TransformSystem transformSystem;
 #include "EntitiesCode\Enemy.h"
 #include "EntitiesCode\LevelHandler.h"
 
+#include "Utilities.h"
+
 /* Uncomment this to get rid of the console when the application is running */
 // #pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 
 int main() {
 /* ------------------------------------ Enroll Entities ------------------------------------ */
-	ecs.EnrollEntity(background, entities);
-	ecs.EnrollEntity(player, entities);
-	ecs.EnrollEntity(enemy, entities);
-	ecs.EnrollEntity(camera, entities);
-	ecs.EnrollEntity(lvlHandler, entities);
-	ecs.EnrollEntity(sps, entities);
+	ENROLL_ENTITY(background);
+	ENROLL_ENTITY(player);
+	ENROLL_ENTITY(enemy);
+	ENROLL_ENTITY(camera);
+	ENROLL_ENTITY(lvlHandler);
+	ENROLL_ENTITY(sps);
 
 	for (unsigned int i = 0; i < 400; i++)
-		ecs.EnrollEntity(wall[i], entities);
+		ENROLL_ENTITY(wall[i]);
 
 	for (unsigned int i = 0; i < 10000; i++)
-		ecs.EnrollEntity(level[i], entities);
+		ENROLL_ENTITY(level[i]);
 
 /* ----------------------------------------------------------------------------------------- */
-	std::cout << "Entities size: " << entities.size() << "\n";
+	ENGINE_LOG("Entities size: %d", entities.size());
 /* ------------------------------------ Add Components to Entities ------------------------------------ */
-	ecs.AddComponent<Component::Transform>(background.transform, entities.at(background.ID).transform, transforms);
-	ecs.AddComponent<Component::Material>(background.material, entities.at(background.ID).material, materials);
+	ADD_COMPONENT(Transform, background);
+	ADD_COMPONENT(Material, background);
 
-	ecs.AddComponent<Component::Transform>(player.transform, entities.at(player.ID).transform, transforms);
-	ecs.AddComponent<Component::Health>(player.health, entities.at(player.ID).health, health);
-	ecs.AddComponent<Component::Script>(player.script, entities.at(player.ID).script, scripts);
-	ecs.AddComponent<Component::Material>(player.material, entities.at(player.ID).material, materials);
-	ecs.AddComponent<Component::CollisionBox>(player.collisionBox, entities.at(player.ID).collisionBox, collisionBoxes);
-	//ecs.AddComponent<Component::Gravity>(player.gravity, entities.at(player.ID).gravity, gravity);
+	ADD_COMPONENT(Transform, player);
+	ADD_COMPONENT(Health, player);
+	ADD_COMPONENT(Script, player);
+	ADD_COMPONENT(Material, player);
+	ADD_COMPONENT(CollisionBox, player);
+	//ADD_COMPONENT(Gravity, player);
 
-	ecs.AddComponent<Component::Transform>(enemy.transform, entities.at(enemy.ID).transform, transforms);
-	ecs.AddComponent<Component::Script>(enemy.script, entities.at(enemy.ID).script, scripts);
-	ecs.AddComponent<Component::Material>(enemy.material, entities.at(enemy.ID).material, materials);
-	ecs.AddComponent<Component::CollisionBox>(enemy.collisionBox, entities.at(enemy.ID).collisionBox, collisionBoxes);
-	ecs.AddComponent<Component::Gravity>(enemy.gravity, entities.at(enemy.ID).gravity, gravity);
-	ecs.AddComponent<Component::Gravity>(enemy.gravity, entities.at(enemy.ID).gravity, gravity);
+	ADD_COMPONENT(Transform, enemy);
+	ADD_COMPONENT(Script, enemy);
+	ADD_COMPONENT(Material, enemy);
+	ADD_COMPONENT(CollisionBox, enemy);
+	ADD_COMPONENT(Gravity, enemy);
 
-	ecs.AddComponent<Component::Script>(lvlHandler.script, entities.at(lvlHandler.ID).script, scripts);
+	ADD_COMPONENT(Script, lvlHandler);
 	
-	ecs.AddComponent<Component::Transform>(camera.transform, entities.at(camera.ID).transform, transforms);
-	
-	ecs.AddComponent<Component::Material>(sps.material, entities.at(sps.ID).material, materials);
+	ADD_COMPONENT(Transform, camera);
+
+	ADD_COMPONENT(Material, sps);
 	
 	for (unsigned int i = 0; i < 400; i++) {
-		ecs.AddComponent<Component::Transform>(wall[i].transform, entities.at(wall[i].ID).transform, transforms);
-		ecs.AddComponent<Component::CollisionBox>(wall[i].collisionBox, entities.at(wall[i].ID).collisionBox, collisionBoxes);
-		ecs.AddComponent<Component::Material>(wall[i].material, entities.at(wall[i].ID).material, materials);
+		ADD_COMPONENT(Transform, wall[i]);
+		ADD_COMPONENT(CollisionBox, wall[i]);
+		ADD_COMPONENT(Material, wall[i]);
 	}
 
 	for (unsigned int i = 0; i < 10000; i++) {
-		ecs.AddComponent<Component::Transform>(level[i].transform, entities.at(level[i].ID).transform, transforms);
-		//ecs.AddComponent<Component::CollisionBox>(level[i].collisionBox, entities.at(level[i].ID).collisionBox, collisionBoxes);
-		ecs.AddComponent<Component::Material>(level[i].material, entities.at(level[i].ID).material, materials);
+		ADD_COMPONENT(Transform, level[i]);
+		//ADD_COMPONENT(CollisionBox, level[i]);
+		ADD_COMPONENT(Material, level[i]);
 	}
 
-	std::cout << "Materials size: " << materials.size() << "\n";
+	ENGINE_LOG("Materials size: %d", Material.size());
 /* ---------------------------------------------------------------------------------------------------- */
 
 /* ------------------------------------ Attach scripts to Entities ------------------------------------ */
-	ecs.GetComponent<Component::Script>(player.script, scripts).init.push_back(Player::Level_0::init);
-	ecs.GetComponent<Component::Script>(player.script, scripts).update.push_back(Player::Level_0::update);
+	GET_COMPONENT(Script, player).init.push_back(Player::Level_0::init);
+	GET_COMPONENT(Script, player).update.push_back(Player::Level_0::update);
 
-	ecs.GetComponent<Component::Script>(enemy.script, scripts).init.push_back(Enemy::Level_0::init);
-	ecs.GetComponent<Component::Script>(enemy.script, scripts).init.push_back(Enemy::Level_1::init);
-	ecs.GetComponent<Component::Script>(enemy.script, scripts).update.push_back(Enemy::Level_0::update);
-	ecs.GetComponent<Component::Script>(enemy.script, scripts).update.push_back(Enemy::Level_1::update);
+	GET_COMPONENT(Script, enemy).init.push_back(Enemy::Level_0::init);
+	GET_COMPONENT(Script, enemy).init.push_back(Enemy::Level_1::init);
+	GET_COMPONENT(Script, enemy).update.push_back(Enemy::Level_0::update);
+	GET_COMPONENT(Script, enemy).update.push_back(Enemy::Level_1::update);
 
-	ecs.GetComponent<Component::Script>(lvlHandler.script, scripts).init.push_back(LevelHandler::Level_0::init);
-	ecs.GetComponent<Component::Script>(lvlHandler.script, scripts).init.push_back(LevelHandler::Level_1::init);
-	ecs.GetComponent<Component::Script>(lvlHandler.script, scripts).update.push_back(LevelHandler::Level_0::update);
-	ecs.GetComponent<Component::Script>(lvlHandler.script, scripts).update.push_back(LevelHandler::Level_1::update);
+	GET_COMPONENT(Script, lvlHandler).init.push_back(LevelHandler::Level_0::init);
+	GET_COMPONENT(Script, lvlHandler).init.push_back(LevelHandler::Level_1::init);
+	GET_COMPONENT(Script, lvlHandler).update.push_back(LevelHandler::Level_0::update);
+	GET_COMPONENT(Script, lvlHandler).update.push_back(LevelHandler::Level_1::update);
 /* ---------------------------------------------------------------------------------------------------- */
 
 /* ------------------------------------ Init components of Entities ------------------------------------ */
-	ecs.GetComponent<Component::Transform>(player.transform, transforms).Static = false;
-	ecs.GetComponent<Component::Transform>(enemy.transform, transforms).Static = false;
-	ecs.GetComponent<Component::Transform>(background.transform, transforms).Static = false;
+	GET_COMPONENT(Transform, player).Static = false;
+	GET_COMPONENT(Transform, enemy).Static = false;
+	GET_COMPONENT(Transform, background).Static = false;
 
 	for (unsigned int i = 0; i < 400; i++)
-		ecs.GetComponent<Component::Transform>(wall[i].transform, transforms).Static = true;
+		GET_COMPONENT(Transform, wall[i]).Static = true;
 
 	for (unsigned int i = 0; i < 10000; i++)
-		ecs.GetComponent<Component::Transform>(level[i].transform, transforms).Static = true;
+		GET_COMPONENT(Transform, level[i]).Static = true;
 
 /* ----------------------------------------------------------------------------------------------------- */
 
@@ -174,12 +176,8 @@ int main() {
 			scriptingSystem.Run(levelSystem.GetCurrentLevel());
 			textureSystem.Run(renderingSystem);
 			gravitySystem.Run();
-			// NOTE: if the ground on which the player lands is very thin, if he has a lot of speed he is gonna clip through
-			//collisionSystem.Run0(renderingSystem.Get_Vertex_Buffer());
-			// NOTE: Possible solution to separate transform and collision system nad possibly increase performance
 			transformSystem.Run(renderingSystem.Get_Vertex_Buffer());
 			collisionSystem.Run(renderingSystem.Get_Vertex_Buffer());
-			transformSystem.Update(renderingSystem.Get_Vertex_Buffer(), collisionSystem.entities_to_be_updated);
 /* ------------------------------------------------------------------------------------- */
 			updates++;
 			deltaTime--;
@@ -191,7 +189,7 @@ int main() {
 		// - Reset after one second
 		if (glfwGetTime() - timer > 1.0) {
 			timer++;
-			std::cout << "FPS: " << frames << " Updates:" << updates << std::endl;
+			ENGINE_LOG("FPS: %d Updates: %d", frames, updates);
 			updates = 0, frames = 0;
 		}
 

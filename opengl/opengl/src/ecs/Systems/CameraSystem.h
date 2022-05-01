@@ -24,10 +24,10 @@ public:
 	const glm::mat4& Get_View_Projection_Matrix() const { return m_View_Projection_Matrix; }
 
 private:
-	void Set_Position(const glm::vec3& position) { ecs.GetComponent<Component::Transform>(camera.transform, transforms).position = position; Recalculate_View_Matrix(); }
-	void Set_Position_x(float position) { ecs.GetComponent<Component::Transform>(camera.transform, transforms).position.x = position; Recalculate_View_Matrix(); }
-	void Set_Position_y(float position) { ecs.GetComponent<Component::Transform>(camera.transform, transforms).position.y = position; Recalculate_View_Matrix(); }
-	void Incr_Position(const glm::vec3& position) { ecs.GetComponent<Component::Transform>(camera.transform, transforms).position.x += position.x;  ecs.GetComponent<Component::Transform>(camera.transform, transforms).position.y += position.y; Recalculate_View_Matrix(); }
+	void Set_Position(const glm::vec3& position) { ecs.GetComponent<Component::Transform>(camera.Transform, Transform).position = position; Recalculate_View_Matrix(); }
+	void Set_Position_x(float position) { ecs.GetComponent<Component::Transform>(camera.Transform, Transform).position.x = position; Recalculate_View_Matrix(); }
+	void Set_Position_y(float position) { ecs.GetComponent<Component::Transform>(camera.Transform, Transform).position.y = position; Recalculate_View_Matrix(); }
+	void Incr_Position(const glm::vec3& position) { ecs.GetComponent<Component::Transform>(camera.Transform, Transform).position.x += position.x;  ecs.GetComponent<Component::Transform>(camera.Transform, Transform).position.y += position.y; Recalculate_View_Matrix(); }
 
 	void Recalculate_View_Matrix();
 

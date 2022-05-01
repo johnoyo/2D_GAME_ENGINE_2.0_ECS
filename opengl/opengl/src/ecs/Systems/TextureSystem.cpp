@@ -59,20 +59,20 @@ void TextureSystem::Start()
 {
 	Init_Transparent_Texture();
 
-	for (unsigned int i = 0; i < materials.size(); i++) {
-		if (materials.at(i).texture != "-") Load_Texture(materials.at(i).texture);
+	for (unsigned int i = 0; i < Material.size(); i++) {
+		if (Material.at(i).texture != "-") Load_Texture(Material.at(i).texture);
 	}
 }
 
 void TextureSystem::Run(RenderingSystem& rend)
 {
 	unsigned int indx = 0;
-	for (unsigned int i = 0; i < materials.size(); i++) {
-		if (materials.at(i).Enabled) {
-			if (materials.at(i).subTexture.path == "-") {
-				rend.Get_Vertex_Buffer().Update_Material_On_Quad(indx, materials.at(i).color, Find(materials.at(i).texture));
+	for (unsigned int i = 0; i < Material.size(); i++) {
+		if (Material.at(i).Enabled) {
+			if (Material.at(i).subTexture.path == "-") {
+				rend.Get_Vertex_Buffer().Update_Material_On_Quad(indx, Material.at(i).color, Find(Material.at(i).texture));
 			} else {
-				rend.Get_Vertex_Buffer().Update_Material_On_Quad(indx, materials.at(i).color, Find(materials.at(i).subTexture.path), materials.at(i).subTexture.coords, size.at(Find(materials.at(i).subTexture.path)), materials.at(i).subTexture.sprite_size);
+				rend.Get_Vertex_Buffer().Update_Material_On_Quad(indx, Material.at(i).color, Find(Material.at(i).subTexture.path), Material.at(i).subTexture.coords, size.at(Find(Material.at(i).subTexture.path)), Material.at(i).subTexture.sprite_size);
 			}
 			indx += 4;
 		}

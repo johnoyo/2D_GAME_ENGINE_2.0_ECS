@@ -10,7 +10,7 @@ CameraSystem::CameraSystem(float left, float right, float bottom, float top)
 void CameraSystem::Recalculate_View_Matrix()
 {
 	glm::mat4 tranform = 
-		glm::translate(glm::mat4(1.0f), ecs.GetComponent<Component::Transform>(camera.transform, transforms).position) *
+		glm::translate(glm::mat4(1.0f), ecs.GetComponent<Component::Transform>(camera.Transform, Transform).position) *
 		glm::rotate(glm::mat4(1.0f), glm::radians(0.0f/*Rotation*/), glm::vec3(0, 0, 1));
 
 	m_View_Matrix = glm::inverse(tranform);
@@ -29,26 +29,26 @@ void CameraSystem::Run()
 
 void CameraSystem::Follow(Entity::BaseEntity player, float offset)
 {
-	Set_Position_x(transforms.at(player.transform).position.x + offset);
-	Set_Position_y(transforms.at(player.transform).position.y + offset);
+	Set_Position_x(Transform.at(player.Transform).position.x + offset);
+	Set_Position_y(Transform.at(player.Transform).position.y + offset);
 	Recalculate_View_Matrix();
 }
 
 void CameraSystem::Follow(Entity::BaseEntity player, float offset_x, float offset_y)
 {
-	Set_Position_x(transforms.at(player.transform).position.x + offset_x);
-	Set_Position_y(transforms.at(player.transform).position.y + offset_y);
+	Set_Position_x(Transform.at(player.Transform).position.x + offset_x);
+	Set_Position_y(Transform.at(player.Transform).position.y + offset_y);
 	Recalculate_View_Matrix();
 }
 
 void CameraSystem::Follow_Horizontally(Entity::BaseEntity player, float offset_x)
 {
-	Set_Position_x(transforms.at(player.transform).position.x + offset_x);
+	Set_Position_x(Transform.at(player.Transform).position.x + offset_x);
 	Recalculate_View_Matrix();
 }
 
 void CameraSystem::Follow_Vertically(Entity::BaseEntity player, float offset_y)
 {
-	Set_Position_y(transforms.at(player.transform).position.y + offset_y);
+	Set_Position_y(Transform.at(player.Transform).position.y + offset_y);
 	Recalculate_View_Matrix();
 }

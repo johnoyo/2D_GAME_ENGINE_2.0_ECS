@@ -71,6 +71,10 @@ public:
 
 	friend class LevelSystem;
 
+	void Draw_Quad(Entity::BaseEntity entt);
+	void Draw_Quad(int index);
+	void Invalidate();
+
 private:
 	VertexBuffer vbuffer;
 	IndexBuffer ibuffer;
@@ -90,7 +94,6 @@ private:
 	void Init_Vertex_Buffer();
 	void Update_Vertex_Buffer_Positions(int playerTransformID);
 	void Update_Camera_Uniform(glm::mat4 m_Camera_vp);
-	void Draw_Lone_Quad(Entity::BaseEntity entt);
 };
 
 

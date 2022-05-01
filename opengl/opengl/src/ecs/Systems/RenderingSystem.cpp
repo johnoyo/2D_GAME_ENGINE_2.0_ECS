@@ -87,15 +87,12 @@ void RenderingSystem::Upadte_Index_Buffer(unsigned int size)
 void RenderingSystem::Init_Vertex_Buffer()
 {
 	vbuffer.Reset();
-	std::cout << "Transform size: " << transforms.size() << "\n";
+	std::cout << "Transform size: " << Transform.size() << "\n";
 
-	for (unsigned int i = 0; i < transforms.size(); i++) {
-		if (transforms.at(i).Enabled) {
-			transforms.at(i).bufferIndex = vbuffer.index;
-			vbuffer.Fill_Buffer({ transforms.at(i).position.x, transforms.at(i).position.y + transforms.at(i).scale.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f), 0);
-			vbuffer.Fill_Buffer({ transforms.at(i).position.x + transforms.at(i).scale.x, transforms.at(i).position.y + transforms.at(i).scale.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f), 0);
-			vbuffer.Fill_Buffer({ transforms.at(i).position.x + transforms.at(i).scale.x , transforms.at(i).position.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f), 0);
-			vbuffer.Fill_Buffer({ transforms.at(i).position.x, transforms.at(i).position.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
+	for (unsigned int i = 0; i < Transform.size(); i++) {
+		if (Transform.at(i).Enabled) {
+			Transform.at(i).bufferIndex = vbuffer.index;
+			Draw_Quad(i);
 		}
 	}
 
@@ -108,8 +105,8 @@ void RenderingSystem::Init_Vertex_Buffer()
 void RenderingSystem::Update_Vertex_Buffer_Positions(int playerTransformID)
 {
 	unsigned int indx = 0;
-	for (unsigned int i = 0; i < transforms.size() - 1; i++) {
-		if(i != playerTransformID && transforms.at(i).Enabled) vbuffer.Update_Position_On_Quad(indx, transforms.at(i));
+	for (unsigned int i = 0; i < Transform.size() - 1; i++) {
+		if(i != playerTransformID && Transform.at(i).Enabled) vbuffer.Update_Position_On_Quad(indx, Transform.at(i));
 		indx += 4;
 	}
 }
@@ -123,17 +120,25 @@ void RenderingSystem::Update_Camera_Uniform(glm::mat4 m_Camera_vp)
 	GLCall(glUniformMatrix4fv(location1, 1, GL_FALSE, glm::value_ptr(m_Camera_vp)));
 }
 
-void RenderingSystem::Draw_Lone_Quad(Entity::BaseEntity entt)
+void RenderingSystem::Draw_Quad(Entity::BaseEntity entt)
 {
-	vbuffer.Reset();
+	vbuffer.Fill_Buffer({ Transform.at(entt.Transform).position.x, Transform.at(entt.Transform).position.y + Transform.at(entt.Transform).scale.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f), 0);
+	vbuffer.Fill_Buffer({ Transform.at(entt.Transform).position.x + Transform.at(entt.Transform).scale.x, Transform.at(entt.Transform).position.y + Transform.at(entt.Transform).scale.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f), 0);
+	vbuffer.Fill_Buffer({ Transform.at(entt.Transform).position.x + Transform.at(entt.Transform).scale.x , Transform.at(entt.Transform).position.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f), 0);
+	vbuffer.Fill_Buffer({ Transform.at(entt.Transform).position.x, Transform.at(entt.Transform).position.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
+}
 
-	vbuffer.Fill_Buffer({ transforms.at(entt.transform).position.x, transforms.at(entt.transform).position.y + transforms.at(entt.transform).scale.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f), 0);
-	vbuffer.Fill_Buffer({ transforms.at(entt.transform).position.x + transforms.at(entt.transform).scale.x, transforms.at(entt.transform).position.y + transforms.at(entt.transform).scale.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f), 0);
-	vbuffer.Fill_Buffer({ transforms.at(entt.transform).position.x + transforms.at(entt.transform).scale.x , transforms.at(entt.transform).position.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f), 0);
-	vbuffer.Fill_Buffer({ transforms.at(entt.transform).position.x, transforms.at(entt.transform).position.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
+void RenderingSystem::Draw_Quad(int index)
+{
+	vbuffer.Fill_Buffer({ Transform.at(index).position.x, Transform.at(index).position.y + Transform.at(index).scale.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f), 0);
+	vbuffer.Fill_Buffer({ Transform.at(index).position.x + Transform.at(index).scale.x, Transform.at(index).position.y + Transform.at(index).scale.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f), 0);
+	vbuffer.Fill_Buffer({ Transform.at(index).position.x + Transform.at(index).scale.x , Transform.at(index).position.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f), 0);
+	vbuffer.Fill_Buffer({ Transform.at(index).position.x, Transform.at(index).position.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
+}
 
-	std::cout << vbuffer.Get_Size() / 4 << "\n";
-
+void RenderingSystem::Invalidate()
+{
+	std::cout << "Vertex buffer size: " << vbuffer.Get_Size() / 4 << "\n";
 	ibuffer.Clean();
 	ibuffer.Make_Indecies(vbuffer.Get_Size());
 	Upadte_Index_Buffer(vbuffer.Get_Size());

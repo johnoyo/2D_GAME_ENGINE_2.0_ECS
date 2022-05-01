@@ -22,10 +22,11 @@ extern Entity::BaseEntity sps;
 /* --------------------------------------------------------------------------------- */
 
 /* ------------------------- Component Vector Declaration -------------------------- */
-extern std::vector<Component::Transform> transforms;
-extern std::vector<Component::CollisionBox> collisionBoxes;
-extern std::vector<Component::Material> materials;
-extern std::vector<Component::Health> health;
-extern std::vector<Component::Script> scripts;
-extern std::vector<Component::Gravity> gravity;
+extern std::vector<Component::Transform> Transform;
+extern std::vector<Component::CollisionBox> CollisionBox;
+extern std::vector<Component::Material> Material;
+extern std::vector<Component::Health> Health;
+extern std::vector<Component::Script> Script;
+extern std::vector<Component::Gravity> Gravity;
+extern std::vector<Component::Shadow> Shadow;
 /* --------------------------------------------------------------------------------- */
