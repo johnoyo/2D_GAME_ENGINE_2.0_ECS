@@ -12,6 +12,7 @@
 #include "Systems\LevelSystem.h"
 #include "Systems\SoundSystem.h"
 #include "Systems\TransformSystem.h"
+#include "Systems\ShadowCastSystem.h"
 
 System ecs = System();
 
@@ -50,6 +51,7 @@ GravitySystem gravitySystem;
 LevelSystem levelSystem;
 SoundSystem soundSystem;
 TransformSystem transformSystem;
+ShadowCastSystem shadowSystem;
 /* --------------------------------------------------------------------------------- */
 
 #include "EntitiesCode\Player.h"
@@ -94,6 +96,7 @@ int main() {
 	ADD_COMPONENT(Material, enemy);
 	ADD_COMPONENT(CollisionBox, enemy);
 	ADD_COMPONENT(Gravity, enemy);
+	ADD_COMPONENT(Shadow, enemy);
 
 	ADD_COMPONENT(Script, lvlHandler);
 	
@@ -154,6 +157,7 @@ int main() {
 	cameraSystem.Start();
 	soundSystem.Start();
 	transformSystem.Start();
+	shadowSystem.Start(glm::vec4(), GET_COMPONENT(Transform, player).position, renderingSystem.Get_Vertex_Buffer(), renderingSystem);
 /* --------------------------------------------------------------------------------------- */
 
 	static double limitFPS = 1.0 / 60.0;
@@ -178,6 +182,7 @@ int main() {
 			gravitySystem.Run();
 			transformSystem.Run(renderingSystem.Get_Vertex_Buffer());
 			collisionSystem.Run(renderingSystem.Get_Vertex_Buffer());
+			shadowSystem.Run(GET_COMPONENT(Transform, player).position, renderingSystem.Get_Vertex_Buffer(), renderingSystem);
 /* ------------------------------------------------------------------------------------- */
 			updates++;
 			deltaTime--;

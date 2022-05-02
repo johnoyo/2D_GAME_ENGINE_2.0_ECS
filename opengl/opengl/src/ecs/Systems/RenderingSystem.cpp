@@ -120,12 +120,12 @@ void RenderingSystem::Update_Camera_Uniform(glm::mat4 m_Camera_vp)
 	GLCall(glUniformMatrix4fv(location1, 1, GL_FALSE, glm::value_ptr(m_Camera_vp)));
 }
 
-void RenderingSystem::Draw_Quad(Entity::BaseEntity entt)
+void RenderingSystem::Draw_Quad(glm::vec2 p0, glm::vec2 p1, glm::vec2 p2, glm::vec2 p3)
 {
-	vbuffer.Fill_Buffer({ Transform.at(entt.Transform).position.x, Transform.at(entt.Transform).position.y + Transform.at(entt.Transform).scale.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f), 0);
-	vbuffer.Fill_Buffer({ Transform.at(entt.Transform).position.x + Transform.at(entt.Transform).scale.x, Transform.at(entt.Transform).position.y + Transform.at(entt.Transform).scale.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f), 0);
-	vbuffer.Fill_Buffer({ Transform.at(entt.Transform).position.x + Transform.at(entt.Transform).scale.x , Transform.at(entt.Transform).position.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f), 0);
-	vbuffer.Fill_Buffer({ Transform.at(entt.Transform).position.x, Transform.at(entt.Transform).position.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
+	vbuffer.Fill_Buffer(p0, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f), 0);
+	vbuffer.Fill_Buffer(p1, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f), 0);
+	vbuffer.Fill_Buffer(p2, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f), 0);
+	vbuffer.Fill_Buffer(p3, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
 }
 
 void RenderingSystem::Draw_Quad(int index)
@@ -218,7 +218,7 @@ unsigned int RenderingSystem::CreateShader(const std::string& vertexShader, cons
 void RenderingSystem::Start(glm::mat4 vpMatrix)
 {
 	std::cout << "Starting rendering system ...\n";
-	vbuffer.total_size = (entities.size()) * 4;
+	vbuffer.total_size = (entities.size() * 4) + (Shadow.size() * 12);
 
 	vbuffer.Initialize(vbuffer.total_size);
 	ibuffer.Make_Indecies(vbuffer.Get_Size());
@@ -277,6 +277,18 @@ void VertexBuffer::Update_Position_On_Quad(unsigned int indx, Component::Transfo
 	//buffer[indx].position.x = tr.position.x;
 	//buffer[indx].position.y = tr.position.y;
 	buffer[indx].position = transform * quad_vertex_position[3];
+	indx++;
+}
+
+void VertexBuffer::Update_Position_On_Quad(unsigned int indx, glm::vec2 p0, glm::vec2 p1, glm::vec2 p2, glm::vec2 p3)
+{
+	buffer[indx].position = p0;
+	indx++;
+	buffer[indx].position = p1;
+	indx++;
+	buffer[indx].position = p2;
+	indx++;
+	buffer[indx].position = p3;
 	indx++;
 }
 

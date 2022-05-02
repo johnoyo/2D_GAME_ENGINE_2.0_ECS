@@ -1,5 +1,6 @@
 #pragma once
 #include "../Header.h"
+#include "../Utilities.h"
 #include "RenderingSystem.h"
  /*
   * Let O be the position of the player
@@ -12,9 +13,7 @@
 
 class ShadowCastSystem {
 public:
-    void Start(glm::vec4 shadow_color);
+    void Start(glm::vec4 shadow_color, glm::vec3 player_position, VertexBuffer& buffer, RenderingSystem& rend);
     void Run(glm::vec3 player_position, VertexBuffer& buffer, RenderingSystem& rend);
     void Clear();
-
-    std::vector<glm::vec2> shadows_list;
 };

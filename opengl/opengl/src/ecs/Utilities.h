@@ -3,9 +3,6 @@
 #include "Header.h"
 #include <string>
 
-#define STRINGIFY(A) #A
-#define LOWER_CASE(str) std::string(STRINGIFY(str)).replace(0, 1, 1, std::string(STRINGIFY(str)).front() + 32)
-
 #define ENROLL_ENTITY(entity) ecs.EnrollEntity(entity, entities)
 
 #define ADD_COMPONENT(component, entity) ecs.AddComponent<Component::component>(entity.component, entities.at(entity.ID).component, component)

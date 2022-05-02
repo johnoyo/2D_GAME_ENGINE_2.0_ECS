@@ -63,9 +63,9 @@ namespace Component {
 	};
 
 	struct Shadow {
-		glm::vec3 position = { 0.0f, 0.0f, 0.0f };
 		glm::vec4 color = { 0.0f, 0.0f, 0.0f, 1.0f };
-		float shadow_distance = 1000.0f;
+		float shadowDistance = 1000.0f;
+		int parentBufferIndex;
 		int bufferIndex;
 		bool Enabled = true;
 	};

@@ -25,6 +25,11 @@ public:
 	}
 
 	template<typename T>
+	void FindOtherEnityComponent(int EntityID, std::vector<T>& ComponentVector) {
+
+	}
+
+	template<typename T>
 	void PrintComponents(std::vector<T> ComponentVector) { }
 
 	template<>

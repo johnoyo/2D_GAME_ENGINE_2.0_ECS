@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "../Header.h"
+#include "../Utilities.h"
 
 namespace Enemy {
 
@@ -8,16 +9,16 @@ namespace Enemy {
 
 		void init(float dt) {
 			std::cout << "Calling enemy init 0 \n";
-			ecs.GetComponent<Component::Material>(enemy.Material, Material).texture = "res/textures/player_r.png";
-			//ecs.GetComponent<Component::Transform>(enemy.Transform, Transform).rotation = 45.0f;
+			GET_COMPONENT(Material, enemy).texture = "res/textures/player_r.png";
+			//GET_COMPONENT(Transform, enemy).rotation = 45.0f;
 
 		}
 
 		void update(float dt) {
 			//std::cout << "Calling enemy update 0 \n";
-			ecs.GetComponent<Component::Transform>(enemy.Transform, Transform).position.x--;
-			//ecs.GetComponent<Component::Transform>(enemy.Transform, Transform).rotation++;
-			ecs.GetComponent<Component::Gravity>(enemy.Gravity, Gravity).Enabled = false;
+			//GET_COMPONENT(Transform, enemy).position.x--;
+			//GET_COMPONENT(Transform, enemy).rotation++;
+			GET_COMPONENT(Gravity, enemy).Enabled = false;
 		}
 
 	}
@@ -26,14 +27,14 @@ namespace Enemy {
 
 		void init(float dt) {
 			std::cout << "Calling enemy init 1 \n";
-			ecs.GetComponent<Component::Material>(enemy.Material, Material).texture = "res/textures/player_r.png";
-			//ecs.GetComponent<Component::Transform>(enemy.Transform, Transform).rotation = 45.0f;
+			GET_COMPONENT(Material, enemy).texture = "res/textures/player_r.png";
+			//GET_COMPONENT(Transform, enemy).rotation = 45.0f;
 		}
 
 		void update(float dt) {
 			//std::cout << "Calling enemy update 1 \n";
-			ecs.GetComponent<Component::Transform>(enemy.Transform, Transform).position.x++;
-			ecs.GetComponent<Component::Gravity>(enemy.Gravity, Gravity).Enabled = false;
+			GET_COMPONENT(Transform, enemy).position.x++;
+			GET_COMPONENT(Gravity, enemy).Enabled = false;
 		}
 
 	}

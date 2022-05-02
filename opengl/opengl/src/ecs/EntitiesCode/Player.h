@@ -19,7 +19,7 @@ namespace Player {
 
 			GET_COMPONENT(Material, player).subTexture.coords = { 6.0f, 1.0f };
 			GET_COMPONENT(Material, player).subTexture.sprite_size = { 16.0f, 16.0f };
-			GET_COMPONENT(Material, player).subTexture.path = ecs.GetComponent<Component::Material>(sps.Material, Material).texture;
+			GET_COMPONENT(Material, player).subTexture.path = GET_COMPONENT(Material, sps).texture;
 
 		}
 
@@ -49,7 +49,7 @@ namespace Player {
 				GET_COMPONENT(Transform, player).position.y += 6.0f;
 
 			if (collisionSystem.CollisionBetween(player, enemy, renderingSystem.Get_Vertex_Buffer()))
-				std::cout << "Player collided with enemy!!!\n";
+				ENGINE_LOG("Player collided with enemy!!!");
 
 			// NOTE: Maybe move this inside the gravity system??? 
 
