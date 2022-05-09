@@ -5,17 +5,17 @@ void CollisionSystem::Start()
 	unsigned int i = 0;
 	for (i = 0; i < entities.size(); i++) {
 		if (entities.at(i).CollisionBox != -1 && entities.at(i).Transform != -1) {
-			CollisionBox.at(entities.at(i).CollisionBox).tl.x = Transform.at(entities.at(i).Transform).position.x;
-			CollisionBox.at(entities.at(i).CollisionBox).tl.y = Transform.at(entities.at(i).Transform).position.y + Transform.at(entities.at(i).Transform).scale.y;
+			CollisionBox.at(entities.at(i).CollisionBox).tl.x = Transform.at(entities.at(i).Transform).position.x - Transform.at(entities.at(i).Transform).scale.x / 2.0f;
+			CollisionBox.at(entities.at(i).CollisionBox).tl.y = Transform.at(entities.at(i).Transform).position.y + Transform.at(entities.at(i).Transform).scale.y / 2.0f;
 
-			CollisionBox.at(entities.at(i).CollisionBox).tr.x = Transform.at(entities.at(i).Transform).position.x + Transform.at(entities.at(i).Transform).scale.x;
-			CollisionBox.at(entities.at(i).CollisionBox).tr.y = Transform.at(entities.at(i).Transform).position.y + Transform.at(entities.at(i).Transform).scale.y;
+			CollisionBox.at(entities.at(i).CollisionBox).tr.x = Transform.at(entities.at(i).Transform).position.x + Transform.at(entities.at(i).Transform).scale.x / 2.0f;
+			CollisionBox.at(entities.at(i).CollisionBox).tr.y = Transform.at(entities.at(i).Transform).position.y + Transform.at(entities.at(i).Transform).scale.y / 2.0f;
 
-			CollisionBox.at(entities.at(i).CollisionBox).br.x = Transform.at(entities.at(i).Transform).position.x + Transform.at(entities.at(i).Transform).scale.x;
-			CollisionBox.at(entities.at(i).CollisionBox).br.y = Transform.at(entities.at(i).Transform).position.y;
+			CollisionBox.at(entities.at(i).CollisionBox).br.x = Transform.at(entities.at(i).Transform).position.x + Transform.at(entities.at(i).Transform).scale.x / 2.0f;
+			CollisionBox.at(entities.at(i).CollisionBox).br.y = Transform.at(entities.at(i).Transform).position.y - Transform.at(entities.at(i).Transform).scale.y / 2.0f;
 
-			CollisionBox.at(entities.at(i).CollisionBox).bl.x = Transform.at(entities.at(i).Transform).position.x;
-			CollisionBox.at(entities.at(i).CollisionBox).bl.y = Transform.at(entities.at(i).Transform).position.y;
+			CollisionBox.at(entities.at(i).CollisionBox).bl.x = Transform.at(entities.at(i).Transform).position.x - Transform.at(entities.at(i).Transform).scale.x / 2.0f;
+			CollisionBox.at(entities.at(i).CollisionBox).bl.y = Transform.at(entities.at(i).Transform).position.y - Transform.at(entities.at(i).Transform).scale.y / 2.0f;
 		}
 	}
 }
@@ -35,10 +35,10 @@ void CollisionSystem::Run0(VertexBuffer& buffer)
 
 			// update collision box on x-axis
 			if (entities.at(i).CollisionBox != -1) {
-				CollisionBox.at(entt.CollisionBox).tl.x = tr.x;
-				CollisionBox.at(entt.CollisionBox).tr.x = tr.x + sc.x;
-				CollisionBox.at(entt.CollisionBox).br.x = tr.x + sc.x;
-				CollisionBox.at(entt.CollisionBox).bl.x = tr.x;
+				CollisionBox.at(entt.CollisionBox).tl.x = tr.x - sc.x / 2.0f;
+				CollisionBox.at(entt.CollisionBox).tr.x = tr.x + sc.x / 2.0f;
+				CollisionBox.at(entt.CollisionBox).br.x = tr.x + sc.x / 2.0f;
+				CollisionBox.at(entt.CollisionBox).bl.x = tr.x - sc.x / 2.0f;
 			}
 
 			// collision check on x-axis
@@ -49,10 +49,10 @@ void CollisionSystem::Run0(VertexBuffer& buffer)
 
 			// update collision box on y-axis
 			if (entities.at(i).CollisionBox != -1) {
-				CollisionBox.at(entt.CollisionBox).tl.y = tr.y + sc.y;
-				CollisionBox.at(entt.CollisionBox).tr.y = tr.y + sc.y;
-				CollisionBox.at(entt.CollisionBox).br.y = tr.y;
-				CollisionBox.at(entt.CollisionBox).bl.y = tr.y;
+				CollisionBox.at(entt.CollisionBox).tl.y = tr.y + sc.y / 2.0f;
+				CollisionBox.at(entt.CollisionBox).tr.y = tr.y + sc.y / 2.0f;
+				CollisionBox.at(entt.CollisionBox).br.y = tr.y - sc.y / 2.0f;
+				CollisionBox.at(entt.CollisionBox).bl.y = tr.y - sc.y / 2.0f;
 			}
 
 			// collision check on y-axis
@@ -73,10 +73,10 @@ void CollisionSystem::Run(VertexBuffer& buffer)
 
 			// update collision box on x-axis
 			if (entities.at(i).CollisionBox != -1) {
-				CollisionBox.at(entt.CollisionBox).tl.x = tr.x;
-				CollisionBox.at(entt.CollisionBox).tr.x = tr.x + sc.x;
-				CollisionBox.at(entt.CollisionBox).br.x = tr.x + sc.x;
-				CollisionBox.at(entt.CollisionBox).bl.x = tr.x;
+				CollisionBox.at(entt.CollisionBox).tl.x = tr.x - sc.x / 2.0f;
+				CollisionBox.at(entt.CollisionBox).tr.x = tr.x + sc.x / 2.0f;
+				CollisionBox.at(entt.CollisionBox).br.x = tr.x + sc.x / 2.0f;
+				CollisionBox.at(entt.CollisionBox).bl.x = tr.x - sc.x / 2.0f;
 			}
 
 			// collision check on x-axis
@@ -84,10 +84,10 @@ void CollisionSystem::Run(VertexBuffer& buffer)
 			
 			// update collision box on y-axis
 			if (entities.at(i).CollisionBox != -1) {
-				CollisionBox.at(entt.CollisionBox).tl.y = tr.y + sc.y;
-				CollisionBox.at(entt.CollisionBox).tr.y = tr.y + sc.y;
-				CollisionBox.at(entt.CollisionBox).br.y = tr.y;
-				CollisionBox.at(entt.CollisionBox).bl.y = tr.y;
+				CollisionBox.at(entt.CollisionBox).tl.y = tr.y + sc.y / 2.0f;
+				CollisionBox.at(entt.CollisionBox).tr.y = tr.y + sc.y / 2.0f;
+				CollisionBox.at(entt.CollisionBox).br.y = tr.y - sc.y / 2.0f;
+				CollisionBox.at(entt.CollisionBox).bl.y = tr.y - sc.y / 2.0f;
 			}
 
 			// collision check on y-axis
@@ -150,10 +150,10 @@ void CollisionSystem::change_position_x(Entity::BaseEntity& p, VertexBuffer& buf
 	glm::vec3 sc = Transform.at(p.Transform).scale;
 
 	// update collision box on x-axis
-	CollisionBox.at(p.CollisionBox).tl.x = tr.x;
-	CollisionBox.at(p.CollisionBox).tr.x = tr.x + sc.x;
-	CollisionBox.at(p.CollisionBox).br.x = tr.x + sc.x;
-	CollisionBox.at(p.CollisionBox).bl.x = tr.x;
+	CollisionBox.at(p.CollisionBox).tl.x = tr.x - sc.x / 2.0f;
+	CollisionBox.at(p.CollisionBox).tr.x = tr.x + sc.x / 2.0f;
+	CollisionBox.at(p.CollisionBox).br.x = tr.x + sc.x / 2.0f;
+	CollisionBox.at(p.CollisionBox).bl.x = tr.x - sc.x / 2.0f;
 
 	// move player on x-axis
 	entities_to_be_updated.push_back(p.Transform);
@@ -166,10 +166,10 @@ void CollisionSystem::change_position_y(Entity::BaseEntity& p, VertexBuffer& buf
 	glm::vec3 sc = Transform.at(p.Transform).scale;
 
 	// update collision box on y-axis
-	CollisionBox.at(p.CollisionBox).tl.y = tr.y + sc.y;
-	CollisionBox.at(p.CollisionBox).tr.y = tr.y + sc.y;
-	CollisionBox.at(p.CollisionBox).br.y = tr.y;
-	CollisionBox.at(p.CollisionBox).bl.y = tr.y;
+	CollisionBox.at(p.CollisionBox).tl.y = tr.y + sc.y / 2.0f;
+	CollisionBox.at(p.CollisionBox).tr.y = tr.y + sc.y / 2.0f;
+	CollisionBox.at(p.CollisionBox).br.y = tr.y - sc.y / 2.0f;
+	CollisionBox.at(p.CollisionBox).bl.y = tr.y - sc.y / 2.0f;
 
 	// move player on y-axis
 	entities_to_be_updated.push_back(p.Transform);

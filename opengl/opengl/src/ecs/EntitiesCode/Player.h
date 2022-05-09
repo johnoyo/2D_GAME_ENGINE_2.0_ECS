@@ -26,8 +26,8 @@ namespace Player {
 		void update(float dt) {
 
 			// Background follow player
-			GET_COMPONENT(Transform, background).position.x = GET_COMPONENT(Transform, player).position.x + (-windowSystem.Get_Width() / 2.0f);
-			GET_COMPONENT(Transform, background).position.y = GET_COMPONENT(Transform, player).position.y + (-windowSystem.Get_Height() / 2.0f);
+			GET_COMPONENT(Transform, background).position.x = GET_COMPONENT(Transform, player).position.x; /*+(-windowSystem.Get_Width() / 2.0f);*/
+			GET_COMPONENT(Transform, background).position.y = GET_COMPONENT(Transform, player).position.y; /*+(-windowSystem.Get_Height() / 2.0f);*/
 
 			// Camera follow player
 			cameraSystem.Follow(player, (-windowSystem.Get_Width() / 2.0f), (-windowSystem.Get_Height() / 2.0f));

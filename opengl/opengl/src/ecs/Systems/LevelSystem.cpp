@@ -162,17 +162,17 @@ void LevelSystem::LoadLevel(const std::string& level_path, ScriptingSystem& scr,
 	for (unsigned int i = 0; i < entities.size(); i++) {
 		if (entities.at(i).CollisionBox != -1 && entities.at(i).Transform != -1) {
 			if (CollisionBox.at(entities.at(i).CollisionBox).Enabled) {
-				CollisionBox.at(entities.at(i).CollisionBox).tl.x = Transform.at(entities.at(i).Transform).position.x;
-				CollisionBox.at(entities.at(i).CollisionBox).tl.y = Transform.at(entities.at(i).Transform).position.y + Transform.at(entities.at(i).Transform).scale.y;
+				CollisionBox.at(entities.at(i).CollisionBox).tl.x = Transform.at(entities.at(i).Transform).position.x - Transform.at(entities.at(i).Transform).scale.x / 2.0f;
+				CollisionBox.at(entities.at(i).CollisionBox).tl.y = Transform.at(entities.at(i).Transform).position.y + Transform.at(entities.at(i).Transform).scale.y / 2.0f;
 
-				CollisionBox.at(entities.at(i).CollisionBox).tr.x = Transform.at(entities.at(i).Transform).position.x + Transform.at(entities.at(i).Transform).scale.x;
-				CollisionBox.at(entities.at(i).CollisionBox).tr.y = Transform.at(entities.at(i).Transform).position.y + Transform.at(entities.at(i).Transform).scale.y;
+				CollisionBox.at(entities.at(i).CollisionBox).tr.x = Transform.at(entities.at(i).Transform).position.x + Transform.at(entities.at(i).Transform).scale.x / 2.0f;
+				CollisionBox.at(entities.at(i).CollisionBox).tr.y = Transform.at(entities.at(i).Transform).position.y + Transform.at(entities.at(i).Transform).scale.y / 2.0f;
 
-				CollisionBox.at(entities.at(i).CollisionBox).br.x = Transform.at(entities.at(i).Transform).position.x + Transform.at(entities.at(i).Transform).scale.x;
-				CollisionBox.at(entities.at(i).CollisionBox).br.y = Transform.at(entities.at(i).Transform).position.y;
+				CollisionBox.at(entities.at(i).CollisionBox).br.x = Transform.at(entities.at(i).Transform).position.x + Transform.at(entities.at(i).Transform).scale.x / 2.0f;
+				CollisionBox.at(entities.at(i).CollisionBox).br.y = Transform.at(entities.at(i).Transform).position.y - Transform.at(entities.at(i).Transform).scale.y / 2.0f;
 
-				CollisionBox.at(entities.at(i).CollisionBox).bl.x = Transform.at(entities.at(i).Transform).position.x;
-				CollisionBox.at(entities.at(i).CollisionBox).bl.y = Transform.at(entities.at(i).Transform).position.y;
+				CollisionBox.at(entities.at(i).CollisionBox).bl.x = Transform.at(entities.at(i).Transform).position.x - Transform.at(entities.at(i).Transform).scale.x / 2.0f;
+				CollisionBox.at(entities.at(i).CollisionBox).bl.y = Transform.at(entities.at(i).Transform).position.y - Transform.at(entities.at(i).Transform).scale.y / 2.0f;
 			}
 		}
 	}

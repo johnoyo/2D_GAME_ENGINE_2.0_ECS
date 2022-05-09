@@ -34,7 +34,7 @@ void ShadowCastSystem::Start(glm::vec4 shadow_color, glm::vec3 player_position, 
 			// Find all shadow points
 			for (int j = 0; j < 4; j++) {
 
-				glm::vec2 E = vertices[i];
+				glm::vec2 E = vertices[j];
 
 				float rdx, rdy;
 				rdx = E.x - O.x;
@@ -79,7 +79,7 @@ void ShadowCastSystem::Run(glm::vec3 player_position, VertexBuffer& buffer, Rend
 			// Find all shadow points
 			for (int j = 0; j < 4; j++) {
 
-				glm::vec2 E = vertices[i];
+				glm::vec2 E = vertices[j];
 
 				float rdx, rdy;
 				rdx = E.x - O.x;

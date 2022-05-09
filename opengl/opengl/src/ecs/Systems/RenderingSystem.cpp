@@ -130,10 +130,10 @@ void RenderingSystem::Draw_Quad(glm::vec2 p0, glm::vec2 p1, glm::vec2 p2, glm::v
 
 void RenderingSystem::Draw_Quad(int index)
 {
-	vbuffer.Fill_Buffer({ Transform.at(index).position.x, Transform.at(index).position.y + Transform.at(index).scale.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f), 0);
-	vbuffer.Fill_Buffer({ Transform.at(index).position.x + Transform.at(index).scale.x, Transform.at(index).position.y + Transform.at(index).scale.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f), 0);
-	vbuffer.Fill_Buffer({ Transform.at(index).position.x + Transform.at(index).scale.x , Transform.at(index).position.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f), 0);
-	vbuffer.Fill_Buffer({ Transform.at(index).position.x, Transform.at(index).position.y }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
+	vbuffer.Fill_Buffer({ Transform.at(index).position.x - Transform.at(index).scale.x / 2.0f, Transform.at(index).position.y + Transform.at(index).scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f), 0);
+	vbuffer.Fill_Buffer({ Transform.at(index).position.x + Transform.at(index).scale.x / 2.0f, Transform.at(index).position.y + Transform.at(index).scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f), 0);
+	vbuffer.Fill_Buffer({ Transform.at(index).position.x + Transform.at(index).scale.x / 2.0f, Transform.at(index).position.y - Transform.at(index).scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f), 0);
+	vbuffer.Fill_Buffer({ Transform.at(index).position.x - Transform.at(index).scale.x / 2.0f, Transform.at(index).position.y - Transform.at(index).scale.y / 2.0f }, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), 0);
 }
 
 void RenderingSystem::Invalidate()
@@ -257,10 +257,14 @@ void VertexBuffer::Update_Position_On_Quad(unsigned int indx, Component::Transfo
 						* glm::scale(glm::mat4(1.0f), glm::vec3(tr.scale.x, tr.scale.y, 1.0f));
 
 	glm::vec4 quad_vertex_position[4];
-	quad_vertex_position[0] = { 0.0f, 1.0f, 0.0f, 1.0f };
-	quad_vertex_position[1] = { 1.0f, 1.0f, 0.0f, 1.0f };
-	quad_vertex_position[2] = { 1.0f, 0.0f, 0.0f, 1.0f };
-	quad_vertex_position[3] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	//quad_vertex_position[0] = { 0.0f, 1.0f, 0.0f, 1.0f };
+	quad_vertex_position[0] = { -0.5f, 0.5f, 0.0f, 1.0f };
+	//quad_vertex_position[1] = { 1.0f, 1.0f, 0.0f, 1.0f };
+	quad_vertex_position[1] = { 0.5f, 0.5f, 0.0f, 1.0f };
+	//quad_vertex_position[2] = { 1.0f, 0.0f, 0.0f, 1.0f };
+	quad_vertex_position[2] = { 0.5f, -0.5f, 0.0f, 1.0f };
+	//quad_vertex_position[3] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	quad_vertex_position[3] = { -0.5f, -0.5f, 0.0f, 1.0f };
 
 	//buffer[indx].position.x = tr.position.x;
 	//buffer[indx].position.y = tr.position.y + tr.scale.y;
@@ -294,25 +298,25 @@ void VertexBuffer::Update_Position_On_Quad(unsigned int indx, glm::vec2 p0, glm:
 
 void VertexBuffer::Update_PositionX_On_Quad(unsigned int indx, Component::Transform tr)
 {
-	buffer[indx].position.x = tr.position.x;
+	buffer[indx].position.x = tr.position.x - tr.scale.x / 2.0f;
 	indx++;
-	buffer[indx].position.x = tr.position.x + tr.scale.x;
+	buffer[indx].position.x = tr.position.x + tr.scale.x / 2.0f;
 	indx++;
-	buffer[indx].position.x = tr.position.x + tr.scale.x;
+	buffer[indx].position.x = tr.position.x + tr.scale.x / 2.0f;
 	indx++;
-	buffer[indx].position.x = tr.position.x;
+	buffer[indx].position.x = tr.position.x - tr.scale.x / 2.0f;
 	indx++;
 }
 
 void VertexBuffer::Update_PositionY_On_Quad(unsigned int indx, Component::Transform tr)
 {
-	buffer[indx].position.y = tr.position.y + tr.scale.y;
+	buffer[indx].position.y = tr.position.y + tr.scale.y / 2.0f;
 	indx++;
-	buffer[indx].position.y = tr.position.y + tr.scale.y;
+	buffer[indx].position.y = tr.position.y + tr.scale.y / 2.0f;
 	indx++;
-	buffer[indx].position.y = tr.position.y;
+	buffer[indx].position.y = tr.position.y - tr.scale.y / 2.0f;
 	indx++;
-	buffer[indx].position.y = tr.position.y;
+	buffer[indx].position.y = tr.position.y - tr.scale.y / 2.0f;
 	indx++;
 }
 
