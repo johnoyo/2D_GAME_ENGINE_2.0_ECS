@@ -1,5 +1,6 @@
 #pragma once
 #include "../Header.h"
+#include "../Utilities.h"
 #include "RenderingSystem.h"
 #include <vector>
 

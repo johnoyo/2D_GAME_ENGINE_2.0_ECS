@@ -4,7 +4,7 @@ void CollisionSystem::Start()
 {
 	unsigned int i = 0;
 	for (i = 0; i < entities.size(); i++) {
-		if (entities.at(i).CollisionBox != -1 && entities.at(i).Transform != -1) {
+		if (TRY_FIND_COMPONENT(CollisionBox, entities.at(i)) && TRY_FIND_COMPONENT(Transform, entities.at(i))) {
 			CollisionBox.at(entities.at(i).CollisionBox).tl.x = Transform.at(entities.at(i).Transform).position.x - Transform.at(entities.at(i).Transform).scale.x / 2.0f;
 			CollisionBox.at(entities.at(i).CollisionBox).tl.y = Transform.at(entities.at(i).Transform).position.y + Transform.at(entities.at(i).Transform).scale.y / 2.0f;
 
@@ -63,6 +63,8 @@ void CollisionSystem::Run0(VertexBuffer& buffer)
 
 void CollisionSystem::Run(VertexBuffer& buffer)
 {
+	//ENGINE_PROFILE("CollisionSystem::Run");
+
 	// update collision boxes of non-static objects
 	for (unsigned int i = 0; i < entities.size(); i++) {
 		if (entities.at(i).Transform != -1 && Transform.at(entities.at(i).Transform).Static == false) {

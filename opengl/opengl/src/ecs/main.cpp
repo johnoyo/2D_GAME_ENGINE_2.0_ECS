@@ -108,6 +108,7 @@ int main() {
 		ADD_COMPONENT(Transform, wall[i]);
 		ADD_COMPONENT(CollisionBox, wall[i]);
 		ADD_COMPONENT(Material, wall[i]);
+		//ADD_COMPONENT(Shadow, wall[i]);
 	}
 
 	for (unsigned int i = 0; i < 10000; i++) {
@@ -157,7 +158,7 @@ int main() {
 	cameraSystem.Start();
 	soundSystem.Start();
 	transformSystem.Start();
-	shadowSystem.Start(glm::vec4(), GET_COMPONENT(Transform, player).position, renderingSystem.Get_Vertex_Buffer(), renderingSystem);
+	shadowSystem.Start(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), GET_COMPONENT(Transform, player).position, renderingSystem.Get_Vertex_Buffer(), renderingSystem);
 /* --------------------------------------------------------------------------------------- */
 
 	static double limitFPS = 1.0 / 60.0;
@@ -187,6 +188,7 @@ int main() {
 			updates++;
 			deltaTime--;
 		}
+
 		// - Render at maximum possible frames
 		renderingSystem.Render(cameraSystem.Get_View_Projection_Matrix());
 		frames++;

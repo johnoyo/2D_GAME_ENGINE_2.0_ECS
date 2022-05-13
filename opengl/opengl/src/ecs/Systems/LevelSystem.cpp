@@ -86,6 +86,9 @@ void LevelSystem::LoadLevel(const std::string& level_path, ScriptingSystem& scr,
 		if (entt.CollisionBox != -1) {
 			CollisionBox.at(entt.CollisionBox).Enabled = false;
 		}
+		if (entt.Shadow != -1) {
+			Shadow.at(entt.Shadow).Enabled = false;
+		}
 	}
 
 	// Set up background
@@ -139,6 +142,7 @@ void LevelSystem::LoadLevel(const std::string& level_path, ScriptingSystem& scr,
 			ecs.GetComponent<Component::CollisionBox>(enemy.CollisionBox, CollisionBox).Enabled = true;
 			ecs.GetComponent<Component::Script>(enemy.Script, Script).Enabled = true;
 			ecs.GetComponent<Component::Material>(enemy.Material, Material).Enabled = true;
+			GET_COMPONENT(Shadow, enemy).Enabled = true;
 			enemy_index++;
 		}
 	}

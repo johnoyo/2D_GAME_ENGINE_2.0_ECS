@@ -120,6 +120,14 @@ void RenderingSystem::Update_Camera_Uniform(glm::mat4 m_Camera_vp)
 	GLCall(glUniformMatrix4fv(location1, 1, GL_FALSE, glm::value_ptr(m_Camera_vp)));
 }
 
+void RenderingSystem::Draw_Quad(glm::vec2 p0, glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec4 color)
+{
+	vbuffer.Fill_Buffer(p0, color, glm::vec2(0.0f, 1.0f), 0);
+	vbuffer.Fill_Buffer(p1, color, glm::vec2(1.0f, 1.0f), 0);
+	vbuffer.Fill_Buffer(p2, color, glm::vec2(1.0f, 0.0f), 0);
+	vbuffer.Fill_Buffer(p3, color, glm::vec2(0.0f, 0.0f), 0);
+}
+
 void RenderingSystem::Draw_Quad(glm::vec2 p0, glm::vec2 p1, glm::vec2 p2, glm::vec2 p3)
 {
 	vbuffer.Fill_Buffer(p0, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f), 0);

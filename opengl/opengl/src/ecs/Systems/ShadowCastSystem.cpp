@@ -4,13 +4,17 @@
 
 void ShadowCastSystem::Start(glm::vec4 shadow_color, glm::vec3 player_position, VertexBuffer& buffer, RenderingSystem& rend)
 {
+	ENGINE_PROFILE("ShadowCastSystem::Start");
+
+	int offset = 0;
 	// Init shadow cast component info
 	for (int i = 0; i < entities.size(); i++) {
 		if (entities.at(i).Transform != -1 && entities.at(i).Shadow != -1) {
 			if (Shadow.at(entities.at(i).Shadow).Enabled) {
 				Shadow.at(entities.at(i).Shadow).parentBufferIndex = Transform.at(entities.at(i).Transform).bufferIndex;
-				Shadow.at(entities.at(i).Shadow).bufferIndex = buffer.Get_Size();
+				Shadow.at(entities.at(i).Shadow).bufferIndex = buffer.Get_Size() + offset;
 				Shadow.at(entities.at(i).Shadow).color = shadow_color;
+				offset += 12;
 			}
 		}
 	}
@@ -51,14 +55,14 @@ void ShadowCastSystem::Start(glm::vec4 shadow_color, glm::vec3 player_position, 
 			}
 
 			// Set shadow quad positions
-			rend.Draw_Quad(vertices[3], shadow_points[3], shadow_points[0], vertices[0]);
-			rend.Draw_Quad(vertices[0], shadow_points[0], shadow_points[1], vertices[1]);
-			rend.Draw_Quad(vertices[1], shadow_points[1], shadow_points[2], vertices[2]);
-
-			// Reset rendering buffers
-			rend.Invalidate();
+			rend.Draw_Quad(vertices[3], shadow_points[3], shadow_points[0], vertices[0], Shadow.at(i).color);
+			rend.Draw_Quad(vertices[0], shadow_points[0], shadow_points[1], vertices[1], Shadow.at(i).color);
+			rend.Draw_Quad(vertices[1], shadow_points[1], shadow_points[2], vertices[2], Shadow.at(i).color);
 		}
 	}
+
+	// Reset rendering buffers
+	rend.Invalidate();
 }
 
 void ShadowCastSystem::Run(glm::vec3 player_position, VertexBuffer& buffer, RenderingSystem& rend)
